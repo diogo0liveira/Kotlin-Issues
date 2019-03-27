@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string name="app_name">Kotlin Issues</string>
+
+    <string name="app_internal_error_client">Erro inesperado</string>
+    <string name="app_internal_server_unavailable">Serviço indisponível</string>
+    <string name="app_internal_no_connection">Sem conexão com a internet</string>
+
+    <string name="empty_list_issues">Os problemas são usados para rastrear todos os itens, bugs, solicitações de recursos e muito mais. À medida que os problemas são criados, eles aparecerão aqui em uma lista pesquisável e filtrável. Para começar, você deve criar um problema.</string>
+
+    <string name="menu_information_title">Info</string>
+</resources>
