@@ -1,4 +1,4 @@
-package com.dao.issues.features.issues
+package com.dao.issues.features.detail
 
 import androidx.annotation.StringRes
 import com.dao.issues.base.mvp.IPresenter
@@ -7,23 +7,21 @@ import com.dao.issues.model.Issue
 import com.dao.issues.util.annotation.Duration
 
 /**
- * Created in 26/03/19 21:44.
+ * Created in 27/03/19 10:59.
  *
  * @author Diogo Oliveira.
  */
-interface IssuesInteractor
+interface IssueDetailInteractor
 {
     interface View : IView
     {
-        fun loadingIssuesList(list: List<Issue>)
-
-        fun startIssuesDetailActivity(issue: Issue)
+        fun putOnForm(issue: Issue)
 
         fun toast(@StringRes message: Int, @Duration duration: Int)
     }
 
     interface Presenter : IPresenter<View>
     {
-        fun loadIssuesList()
+        fun loadIssue(issue: Issue)
     }
 }

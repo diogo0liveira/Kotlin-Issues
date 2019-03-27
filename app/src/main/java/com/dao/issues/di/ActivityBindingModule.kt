@@ -1,6 +1,8 @@
 package com.dao.issues.di
 
 import com.dao.issues.di.annotations.ActivityScoped
+import com.dao.issues.features.detail.IssueDetailActivity
+import com.dao.issues.features.detail.IssueDetailModule
 import com.dao.issues.features.issues.IssuesActivity
 import com.dao.issues.features.issues.IssuesModule
 import dagger.Module
@@ -18,7 +20,7 @@ abstract class ActivityBindingModule
     @ContributesAndroidInjector(modules = [IssuesModule::class])
     abstract fun bindIssuesActivity(): IssuesActivity
 
-//    @ActivityScoped
-//    @ContributesAndroidInjector(modules = [MovieDetailModule::class])
-//    abstract fun bindIssuesMovieDetailActivity(): MovieDetailActivity
+    @ActivityScoped
+    @ContributesAndroidInjector(modules = [IssueDetailModule::class])
+    abstract fun bindIssueDetailActivity(): IssueDetailActivity
 }

@@ -30,7 +30,7 @@ task clean(type: Delete) {
 }
 
 ext {
-    minSdkVersion = 22
+    minSdkVersion = 23
     targetSdkVersion = 28
     compileSdkVersion = 28
 
@@ -42,8 +42,8 @@ ext {
     coordinatorlayoutVersion = '1.1.0-alpha01'
 
     /* External */
-    daggerVersion = '2.20'
-    daggerAndroidVersion = '2.20'
+    daggerVersion = '2.21'
+    daggerAndroidVersion = '2.21'
     glideVersion = '4.9.0'
     gsonVersion = '2.8.5'
     rxjavaVersion = '2.2.0'

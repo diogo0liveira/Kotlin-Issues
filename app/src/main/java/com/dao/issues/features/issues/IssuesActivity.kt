@@ -1,5 +1,6 @@
 package com.dao.issues.features.issues
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -7,11 +8,13 @@ import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.dao.issues.Extras
 import com.dao.issues.R
 import com.dao.issues.base.BaseActivity
 import com.dao.issues.base.Recycler
 import com.dao.issues.databinding.ActivityIssuesBinding
 import com.dao.issues.databinding.ViewEmptyIssuesBinding
+import com.dao.issues.features.detail.IssueDetailActivity
 import com.dao.issues.model.Issue
 import javax.inject.Inject
 
@@ -42,8 +45,7 @@ class IssuesActivity : BaseActivity(), IssuesInteractor.View, Recycler.Adapter.O
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean
     {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.option_issues, menu)
+        menuInflater.inflate(R.menu.option_issues, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -91,14 +93,16 @@ class IssuesActivity : BaseActivity(), IssuesInteractor.View, Recycler.Adapter.O
         presenter.loadIssuesList()
     }
 
-    override fun startIssuesDetailActivity()
-    {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
     override fun onIssueViewOnClick(issue: Issue)
     {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        startIssuesDetailActivity(issue)
+    }
+
+    override fun startIssuesDetailActivity(issue: Issue)
+    {
+        val intent = Intent(this, IssueDetailActivity::class.java)
+        intent.putExtra(Extras.ISSUE, issue)
+        startActivity(intent)
     }
 
     override fun loadingIssuesList(list: List<Issue>)

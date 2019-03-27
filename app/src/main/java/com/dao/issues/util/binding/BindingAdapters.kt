@@ -1,11 +1,21 @@
 package com.dao.issues.util.binding
 
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.content.ContextCompat
 import androidx.core.text.PrecomputedTextCompat
+import androidx.core.view.ViewCompat
 import androidx.core.widget.TextViewCompat
 import androidx.databinding.BindingAdapter
+import com.dao.issues.R
+import com.dao.issues.model.Issue
+import com.dao.issues.model.State
+import com.dao.issues.util.CircularOutlineProvider
+import com.dao.issues.util.extensions.load
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * Created in 03/08/18 16:17.
@@ -18,32 +28,38 @@ fun visible(view: View, visible: Boolean)
     view.visibility = if(visible) View.VISIBLE else View.GONE
 }
 
-//@BindingAdapter(value = ["text", "date"], requireAll = false)
-//fun date(view: TextView, text: String?, date: String?)
-//{
-//    var message = date ?: DateTime.dateFormatMedium(Date.valueOf(date).time)
-//
-//    if(!Strings.isEmpty(text))
-//    {
-//        message = text?.let { String.format(it, message) }
-//    }
-//
-//    view.text = message
-//}
-//
-//@BindingAdapter("cover")
-//fun cover(view: ImageView, uri: String?)
-//{
-//    uri?.let { view.load(API.URL_COVER + uri) } ?: run {
-//        view.setImageResource(R.drawable.vd_movie_120dp)
-//    }
-//}
-//
-//@BindingAdapter("favorite")
-//fun favorite(view: FloatingActionButton, favorite: Boolean)
-//{
-//    view.setImageResource(if(favorite) R.drawable.vd_favorite_24dp else R.drawable.vd_not_favorite_24dp)
-//}
+@BindingAdapter(value = ["createdAt"])
+fun createdAt(view: TextView, issue: Issue)
+{
+    val parse = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)
+    parse.timeZone = TimeZone.getDefault()
+
+    val date = parse.parse(issue.created)
+    val dateFormatted = SimpleDateFormat("EEE, MMM d, yy", Locale.ENGLISH).format(date)
+    view.text = view.context.getString(R.string.issue_created, issue.number, dateFormatted, issue.user.login)
+}
+
+@BindingAdapter(value = ["state"])
+fun state(view: TextView, state: State)
+{
+    when(state)
+    {
+        State.OPEN  -> ViewCompat.setBackgroundTintList(view, ContextCompat.getColorStateList(view.context, R.color.state_open))
+        State.CLOSE -> ViewCompat.setBackgroundTintList(view, ContextCompat.getColorStateList(view.context, R.color.state_close))
+    }
+
+    view.text = state.name
+}
+
+@BindingAdapter("avatar")
+fun avatar(view: ImageView, uri: String?)
+{
+    view.apply {
+        clipToOutline = true
+        outlineProvider = CircularOutlineProvider
+        load(uri)
+    }
+}
 
 @BindingAdapter("asyncText", "android:textSize", requireAll = false)
 fun asyncText(view: TextView, text: CharSequence, textSize: Int?)

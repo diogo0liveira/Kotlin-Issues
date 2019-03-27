@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.dao.issues.features.detail.IssueDetailActivity">
+
+    <data>
+        <variable name="issue" type="com.dao.issues.model.Issue"/>
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stateListAnimator="@animator/toolbar_animator_elevation">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:titleTextColor="@android:color/black"
+                android:title="@{@string/issue_number(issue.number)}"
+                app:popupTheme="@style/AppTheme.PopupOverlay">
+
+                <ImageView
+                    android:id="@+id/profile_button"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:padding="4dp"
+                    android:layout_gravity="center_vertical|end"
+                    android:foreground="?selectableItemBackground"
+                    android:background="@drawable/shape_circle"
+                    app:avatar="@{issue.user.avatar}"
+                    tools:srcCompat="@drawable/ic_account_circle_24dp"
+                    tools:ignore="ContentDescription"/>
+            </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <include
+            android:id="@+id/content_detail"
+            layout="@layout/content_issue_detail" app:issue="@{issue}"/>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>
