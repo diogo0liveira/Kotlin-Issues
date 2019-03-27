@@ -64,6 +64,12 @@ class IssuesActivity : BaseActivity(), IssuesInteractor.View, Recycler.Adapter.O
 
     override fun initializeView()
     {
+        supportActionBar?.apply {
+            setLogo(R.drawable.ic_launcher_foreground)
+            setDisplayShowHomeEnabled(true)
+            setDisplayUseLogoEnabled(true)
+        }
+
         if(helper.messageEmpty.isInflated)
         {
             helperEmpty.visible = true
