@@ -1,7 +1,6 @@
 package com.dao.issues.model
 
 import android.os.Parcelable
-import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
@@ -21,10 +20,31 @@ data class User(
         @SerializedName("avatar_url")
         val avatar: String,
         @SerializedName("url")
-        val profile: String): Parcelable
+        val profile: String,
+        @SerializedName("html_url")
+        val profileLink: String,
+        @SerializedName("location")
+        private val _location: String?,
+        @SerializedName("blog")
+        private val _blog: String?,
+        @SerializedName("bio")
+        private val _bio: String?,
+        @SerializedName("followers")
+        val followers: Int,
+        @SerializedName("following")
+        val following: Int): Parcelable
 {
     val name
         get () = _name ?: ""
+
+    val location
+        get () = _location ?: ""
+
+    val blog
+        get () = _blog ?: ""
+
+    val bio
+        get () = _bio ?: ""
 
     override fun toString(): String
     {

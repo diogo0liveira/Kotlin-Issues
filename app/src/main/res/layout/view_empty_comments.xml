@@ -5,26 +5,32 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable name="visible" type="boolean"/>
+        <variable name="empty_visibility" type="boolean"/>
+        <variable name="progress_visibility" type="boolean"/>
     </data>
 
-    <LinearLayout
-        android:id="@+id/view"
+    <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:orientation="vertical"
-        app:visible="@{visible}">
+        android:orientation="vertical">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:visible="@{progress_visibility}"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:drawableTop="@drawable/ic_comment_120dp"
+            android:layout_gravity="center"
             android:textAppearance="@style/TextAppearance.List.Empty"
             android:text="@string/empty_list_comments"
             android:fontFamily="sans-serif"
             android:textStyle="bold"
-            android:enabled="false"/>
-    </LinearLayout>
+            android:enabled="false"
+            app:visible="@{empty_visibility}"/>
+    </FrameLayout>
 </layout>

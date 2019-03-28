@@ -3,6 +3,7 @@ package com.dao.issues.network.retrofit
 import com.dao.issues.API
 import com.dao.issues.model.Comment
 import com.dao.issues.model.Issue
+import com.dao.issues.model.User
 import com.dao.issues.util.network.ContentType
 import io.reactivex.Observable
 import retrofit2.http.GET
@@ -19,6 +20,10 @@ interface GithubApi
     @GET(API.URL_ISSUES)
     @Headers(ContentType.APPLICATION_JSON)
     fun issues(): Observable<List<Issue>>
+
+    @GET
+    @Headers(ContentType.APPLICATION_JSON)
+    fun user(@Url url: String): Observable<User>
 
     @GET
     @Headers(ContentType.APPLICATION_JSON)

@@ -5,6 +5,7 @@ import com.dao.issues.base.mvp.IPresenter
 import com.dao.issues.base.mvp.IView
 import com.dao.issues.model.Comment
 import com.dao.issues.model.Issue
+import com.dao.issues.model.User
 import com.dao.issues.util.annotation.Duration
 
 /**
@@ -18,6 +19,8 @@ interface IssueDetailInteractor
     {
         fun putOnForm(issue: Issue)
 
+        fun loadingUserProfile(user: User)
+
         fun loadingComments(comments: List<Comment>)
 
         fun toast(@StringRes message: Int, @Duration duration: Int)
@@ -27,6 +30,8 @@ interface IssueDetailInteractor
     {
         fun loadIssue(issue: Issue)
 
-        fun  loadComments(issue: Issue)
+        fun loadComments(issue: Issue)
+
+        fun loadUserProfile(user: User)
     }
 }

@@ -2,6 +2,7 @@ package com.dao.issues.features.detail
 
 import com.dao.issues.data.repository.IssuesRepository
 import com.dao.issues.model.Issue
+import com.dao.issues.model.User
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -25,6 +26,15 @@ class IssueDetailPresenter constructor(private val repository: IssuesRepository)
     override fun terminate()
     {
         composite.clear()
+    }
+
+    override fun loadUserProfile(user: User)
+    {
+        val disposable = repository.loadUser(user.profile)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { view.loadingUserProfile(it) }
+        composite.add(disposable)
     }
 
     override fun loadIssue(issue: Issue)

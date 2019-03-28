@@ -15,4 +15,7 @@
     <string name="issue_number">Issue: #%1$d</string>
 
     <string name="menu_information_title">Info</string>
+
+    <string name="user_followers">followers</string>
+    <string name="user_following">following</string>
 </resources>

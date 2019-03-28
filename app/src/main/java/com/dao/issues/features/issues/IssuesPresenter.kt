@@ -30,9 +30,9 @@ class IssuesPresenter constructor(private val repository: IssuesRepository) : Is
     {
         val disposable = repository.loadIssues()
                 .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { view.showLoading() }
                 .doOnTerminate { view.hideLoading() }
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { view.loadingIssuesList(it) }
 
         composite.add(disposable)

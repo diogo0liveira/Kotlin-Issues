@@ -12,9 +12,16 @@ import com.dao.issues.base.BaseActivity
 import com.dao.issues.base.Recycler
 import com.dao.issues.databinding.ActivityIssueDetailBinding
 import com.dao.issues.databinding.ViewEmptyCommentsBinding
+import com.dao.issues.databinding.ViewUserProfileBinding
 import com.dao.issues.model.Comment
 import com.dao.issues.model.Issue
+import com.dao.issues.model.User
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import javax.inject.Inject
+import android.content.Intent
+import android.net.Uri
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+
 
 /**
  * Created in 27/03/19 10:53.
@@ -77,14 +84,14 @@ class IssueDetailActivity : BaseActivity(), IssueDetailInteractor.View, Recycler
 
         if(helper.contentDetail.contentCardComments.messageEmpty.isInflated)
         {
-            helperEmpty.visible = true
+            helperEmpty.emptyVisibility = true
         }
         else
         {
             with(helper.contentDetail.contentCardComments.messageEmpty) {
                 viewStub!!.visibility = View.VISIBLE
                 helperEmpty = DataBindingUtil.findBinding(this.root)!!
-                helperEmpty.visible = true
+                helperEmpty.emptyVisibility = true
             }
         }
 
@@ -100,22 +107,44 @@ class IssueDetailActivity : BaseActivity(), IssueDetailInteractor.View, Recycler
         helper.contentDetail.scrollView.setOnScrollChangeListener { _, _, _, _, _ ->
             helper.appBar.isSelected = helper.contentDetail.scrollView.canScrollVertically(-1)
         }
+
+        helper.profileButton.setOnClickListener {
+            val issue: Issue = intent.getParcelableExtra(Extras.ISSUE)
+            presenter.loadUserProfile(issue.user)
+        }
     }
 
     override fun showLoading()
     {
-//        helper.swipeRefresh.isRefreshing = true
+        helperEmpty.emptyVisibility = false
+        helperEmpty.progressVisibility = true
     }
 
     override fun hideLoading()
     {
-//        helper.swipeRefresh.isRefreshing = false
+        helperEmpty.progressVisibility = false
     }
 
     override fun putOnForm(issue: Issue)
     {
         helper.issue = issue
         presenter.loadComments(issue)
+    }
+
+    override fun loadingUserProfile(user: User)
+    {
+        val view: ViewUserProfileBinding = ViewUserProfileBinding.inflate(layoutInflater)
+        view.user = user
+
+        val bottomSheet = BottomSheetDialog(this)
+        bottomSheet.setContentView(view.root)
+        bottomSheet.show()
+
+        view.buttonGithub.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(user.profileLink))
+            startActivity(intent)
+            bottomSheet.dismiss()
+        }
     }
 
     override fun loadingComments(comments: List<Comment>)
@@ -125,7 +154,7 @@ class IssueDetailActivity : BaseActivity(), IssueDetailInteractor.View, Recycler
 
     override fun onCollectionChanged(isEmpty: Boolean)
     {
-        helperEmpty.visible = isEmpty
+        helperEmpty.emptyVisibility = isEmpty
     }
 
     override fun toast(message: Int, duration: Int)

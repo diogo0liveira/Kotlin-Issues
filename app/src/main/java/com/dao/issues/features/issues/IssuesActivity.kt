@@ -1,6 +1,7 @@
 package com.dao.issues.features.issues
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -55,6 +56,8 @@ class IssuesActivity : BaseActivity(), IssuesInteractor.View, Recycler.Adapter.O
         {
             R.id.menu_information ->
             {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/diogo0liveira"))
+                startActivity(intent)
                 true
             }
             else ->
