@@ -8,4 +8,8 @@ package com.dao.issues.base.mvp
 interface IView
 {
     fun initializeView()
+
+    fun showLoading()
+
+    fun hideLoading()
 }

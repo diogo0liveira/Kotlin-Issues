@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.dao.issues.R
 import com.dao.issues.base.Recycler
-import com.dao.issues.databinding.ViewRowIssuesBinding
+import com.dao.issues.databinding.ViewRowIssueBinding
 import com.dao.issues.model.Issue
 
 /**
@@ -22,7 +22,7 @@ class IssuesAdapter(
 {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder
     {
-        val binding: ViewRowIssuesBinding = this.inflate(parent, R.layout.view_row_issues)
+        val binding: ViewRowIssueBinding = this.inflate(parent, R.layout.view_row_issue)
         return ViewHolder(binding, listener)
     }
 
@@ -31,7 +31,7 @@ class IssuesAdapter(
         holder.binding.issue = item
     }
 
-    inner class ViewHolder(val binding: ViewRowIssuesBinding, private val listener: IssueViewOnClickListener) :
+    inner class ViewHolder(val binding: ViewRowIssueBinding, private val listener: IssueViewOnClickListener) :
             RecyclerView.ViewHolder(binding.root), View.OnClickListener
     {
         init

@@ -64,6 +64,12 @@ class IssuesActivity : BaseActivity(), IssuesInteractor.View, Recycler.Adapter.O
         }
     }
 
+    override fun onDestroy()
+    {
+        super.onDestroy()
+        presenter.terminate()
+    }
+
     override fun initializeView()
     {
         supportActionBar?.apply {
@@ -83,14 +89,28 @@ class IssuesActivity : BaseActivity(), IssuesInteractor.View, Recycler.Adapter.O
             helperEmpty.visible = true
         }
 
-        val divider = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
-        helper.issuesList.addItemDecoration(divider)
-        helper.issuesList.setHasFixedSize(true)
+        with(helper.issuesList) {
+            val divider = DividerItemDecoration(this@IssuesActivity, DividerItemDecoration.VERTICAL)
+            addItemDecoration(divider)
+            setHasFixedSize(true)
+        }
 
         adapter.setOnCollectionChangedListener(this)
         helper.issuesList.adapter = adapter
 
+        helper.swipeRefresh.setOnRefreshListener { presenter.loadIssuesList() }
+
         presenter.loadIssuesList()
+    }
+
+    override fun showLoading()
+    {
+        helper.swipeRefresh.isRefreshing = true
+    }
+
+    override fun hideLoading()
+    {
+        helper.swipeRefresh.isRefreshing = false
     }
 
     override fun onIssueViewOnClick(issue: Issue)
@@ -105,9 +125,9 @@ class IssuesActivity : BaseActivity(), IssuesInteractor.View, Recycler.Adapter.O
         startActivity(intent)
     }
 
-    override fun loadingIssuesList(list: List<Issue>)
+    override fun loadingIssuesList(issues: List<Issue>)
     {
-        adapter.setDataList(list.toMutableList())
+        adapter.setDataList(issues.toMutableList())
     }
 
     override fun onCollectionChanged(isEmpty: Boolean)

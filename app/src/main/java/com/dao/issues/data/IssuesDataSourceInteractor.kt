@@ -1,7 +1,8 @@
 package com.dao.issues.data
 
+import com.dao.issues.model.Comment
 import com.dao.issues.model.Issue
-import com.dao.issues.network.ResultError
+import io.reactivex.Observable
 
 /**
  * Created in 26/03/19 21:14.
@@ -10,12 +11,7 @@ import com.dao.issues.network.ResultError
  */
 interface IssuesDataSourceInteractor
 {
-    fun load(listener: ListIssuesListener)
+    fun loadIssues(): Observable<List<Issue>>
 
-    interface ListIssuesListener
-    {
-        fun onListSuccess(list: List<Issue>)
-
-        fun onListError(error: ResultError)
-    }
+    fun loadIssueComments(url: String): Observable<List<Comment>>
 }

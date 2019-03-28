@@ -8,4 +8,6 @@ package com.dao.issues.base.mvp
 interface IPresenter<T : IView>
 {
     fun initialize(view: T)
+
+    fun terminate()
 }

@@ -7,9 +7,12 @@
     <string name="app_internal_server_unavailable">Serviço indisponível</string>
     <string name="app_internal_no_connection">Sem conexão com a internet</string>
 
-    <string name="issue_created">#%1$d opened %2$s by %3$s</string>
-    <string name="issue_number">Issue: #%1$d</string>
+    <string name="empty_list_comments">Não há comentários para essa issue.</string>
     <string name="empty_list_issues">Os problemas são usados para rastrear todos os itens, bugs, solicitações de recursos e muito mais. À medida que os problemas são criados, eles aparecerão aqui em uma lista pesquisável e filtrável. Para começar, você deve criar um problema.</string>
+
+    <string name="issue_created_at">#%1$d opened %2$s by %3$s</string>
+    <string name="issue_created">opened %1$s by %2$s</string>
+    <string name="issue_number">Issue: #%1$d</string>
 
     <string name="menu_information_title">Info</string>
 </resources>

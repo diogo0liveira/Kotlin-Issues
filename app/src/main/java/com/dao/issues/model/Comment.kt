@@ -5,31 +5,23 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 /**
- * Created in 26/03/19 21:48.
+ * Created in 27/03/19 22:42.
  *
  * @author Diogo Oliveira.
  */
 @Parcelize
-data class Issue(
-        @SerializedName("title")
-        val title: String,
-        @SerializedName("number")
-        val number: Int,
+data class Comment(
         @SerializedName("created_at")
         val created: String,
+        @SerializedName("author_association")
+        val author: String,
         @SerializedName("body")
         val body: String,
-        @SerializedName("state")
-        val state: State,
-        @SerializedName("comments")
-        val commentsCount: Int,
-        @SerializedName("comments_url")
-        val commentsUrl: String,
         @SerializedName("user")
         val user: User) : Parcelable
 {
     override fun toString(): String
     {
-        return title
+        return body
     }
 }

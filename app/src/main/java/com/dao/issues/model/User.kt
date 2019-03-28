@@ -12,19 +12,14 @@ import kotlinx.android.parcel.Parcelize
  */
 @Parcelize
 data class User(
-        @Expose
         @SerializedName("id")
         val id: Int,
-        @Expose
         @SerializedName("name")
         private val _name: String? = "",
-        @Expose
         @SerializedName("login")
         val login: String,
-        @Expose
         @SerializedName("avatar_url")
         val avatar: String,
-        @Expose
         @SerializedName("url")
         val profile: String): Parcelable
 {

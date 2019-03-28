@@ -15,7 +15,7 @@ interface IssuesInteractor
 {
     interface View : IView
     {
-        fun loadingIssuesList(list: List<Issue>)
+        fun loadingIssuesList(issues: List<Issue>)
 
         fun startIssuesDetailActivity(issue: Issue)
 

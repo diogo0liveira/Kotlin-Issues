@@ -1,12 +1,9 @@
 package com.dao.issues.features.issues
 
-import android.util.Log
-import android.widget.Toast
-import com.dao.issues.TAG
-import com.dao.issues.data.IssuesDataSourceInteractor
 import com.dao.issues.data.repository.IssuesRepository
-import com.dao.issues.model.Issue
-import com.dao.issues.network.ResultError
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 
 /**
  * Created in 26/03/19 21:51.
@@ -16,6 +13,7 @@ import com.dao.issues.network.ResultError
 class IssuesPresenter constructor(private val repository: IssuesRepository) : IssuesInteractor.Presenter
 {
     private lateinit var view: IssuesInteractor.View
+    private val composite: CompositeDisposable = CompositeDisposable()
 
     override fun initialize(view: IssuesInteractor.View)
     {
@@ -23,21 +21,20 @@ class IssuesPresenter constructor(private val repository: IssuesRepository) : Is
         this.view.initializeView()
     }
 
+    override fun terminate()
+    {
+        composite.clear()
+    }
+
     override fun loadIssuesList()
     {
-        repository.load(object : IssuesDataSourceInteractor.ListIssuesListener
-        {
-            override fun onListSuccess(list: List<Issue>)
-            {
-                view.loadingIssuesList(list)
-            }
+        val disposable = repository.loadIssues()
+                .subscribeOn(Schedulers.io())
+                .doOnSubscribe { view.showLoading() }
+                .doOnTerminate { view.hideLoading() }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { view.loadingIssuesList(it) }
 
-            override fun onListError(error: ResultError)
-            {
-                view.toast(error.messageRes, Toast.LENGTH_LONG)
-                Log.e(TAG, "erro ao carregar issues")
-            }
-
-        })
+        composite.add(disposable)
     }
 }

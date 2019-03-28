@@ -28,18 +28,36 @@ fun visible(view: View, visible: Boolean)
     view.visibility = if(visible) View.VISIBLE else View.GONE
 }
 
-@BindingAdapter(value = ["createdAt"])
-fun createdAt(view: TextView, issue: Issue)
+@BindingAdapter("created")
+fun created(view: TextView, date: String)
+{
+    val parse = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)
+    parse.timeZone = TimeZone.getDefault()
+
+    val dateFormatted = SimpleDateFormat("EEE, MMM d, yy", Locale.ENGLISH).format(parse.parse(date))
+    view.text = dateFormatted
+}
+
+@BindingAdapter("createdAt", "shortDescription", requireAll = false)
+fun createdAt(view: TextView, issue: Issue, shortDescription: Boolean)
 {
     val parse = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)
     parse.timeZone = TimeZone.getDefault()
 
     val date = parse.parse(issue.created)
     val dateFormatted = SimpleDateFormat("EEE, MMM d, yy", Locale.ENGLISH).format(date)
-    view.text = view.context.getString(R.string.issue_created, issue.number, dateFormatted, issue.user.login)
+
+    if(shortDescription)
+    {
+        view.text = view.context.getString(R.string.issue_created, dateFormatted, issue.user.login)
+    }
+    else
+    {
+        view.text = view.context.getString(R.string.issue_created_at, issue.number, dateFormatted, issue.user.login)
+    }
 }
 
-@BindingAdapter(value = ["state"])
+@BindingAdapter("state")
 fun state(view: TextView, state: State)
 {
     when(state)
