@@ -20,11 +20,10 @@
             android:id="@+id/button_github"
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:background="@drawable/shape_circle"
-            android:foreground="?selectableItemBackground"
+            android:background="?selectableItemBackgroundBorderless"
+            app:srcCompat="@drawable/ic_github_circle_32dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_github_circle"
             tools:ignore="ContentDescription"/>
 
         <ImageView

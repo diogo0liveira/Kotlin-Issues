@@ -11,6 +11,8 @@ import kotlinx.android.parcel.Parcelize
  */
 @Parcelize
 data class Issue(
+        @SerializedName("html_url")
+        val url: String,
         @SerializedName("title")
         val title: String,
         @SerializedName("number")

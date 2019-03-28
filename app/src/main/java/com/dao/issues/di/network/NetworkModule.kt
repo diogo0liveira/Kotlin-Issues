@@ -3,8 +3,8 @@ package com.dao.issues.di.network
 import android.content.Context
 import com.dao.issues.API
 import com.dao.issues.BuildConfig
-import com.dao.issues.network.retrofit.authority.TokenRequestInterceptor
-import com.dao.issues.network.retrofit.GithubApi
+import com.dao.issues.network.authority.TokenRequestInterceptor
+import com.dao.issues.network.GithubApi
 import dagger.Module
 import dagger.Provides
 import okhttp3.Cache

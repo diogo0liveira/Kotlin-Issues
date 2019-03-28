@@ -1,4 +1,4 @@
-package com.dao.issues.network.retrofit.authority
+package com.dao.issues.network.authority
 
 import com.dao.issues.API.API_KEY
 import com.dao.issues.KeyParameter

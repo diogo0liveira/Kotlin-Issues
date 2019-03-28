@@ -19,6 +19,8 @@ interface IssueDetailInteractor
     {
         fun putOnForm(issue: Issue)
 
+        fun openInBrowser(url: String)
+
         fun loadingUserProfile(user: User)
 
         fun loadingComments(comments: List<Comment>)
@@ -28,10 +30,12 @@ interface IssueDetailInteractor
 
     interface Presenter : IPresenter<View>
     {
+        fun loadComments()
+
+        fun loadUserProfile()
+
+        fun showIssuesGithub()
+
         fun loadIssue(issue: Issue)
-
-        fun loadComments(issue: Issue)
-
-        fun loadUserProfile(user: User)
     }
 }

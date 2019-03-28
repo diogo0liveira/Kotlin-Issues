@@ -2,7 +2,6 @@ package com.dao.issues.features.detail
 
 import com.dao.issues.data.repository.IssuesRepository
 import com.dao.issues.model.Issue
-import com.dao.issues.model.User
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -15,6 +14,8 @@ import io.reactivex.schedulers.Schedulers
 class IssueDetailPresenter constructor(private val repository: IssuesRepository) : IssueDetailInteractor.Presenter
 {
     private lateinit var view: IssueDetailInteractor.View
+    private lateinit var issue: Issue
+
     private val composite: CompositeDisposable = CompositeDisposable()
 
     override fun initialize(view: IssueDetailInteractor.View)
@@ -28,21 +29,27 @@ class IssueDetailPresenter constructor(private val repository: IssuesRepository)
         composite.clear()
     }
 
-    override fun loadUserProfile(user: User)
+    override fun loadIssue(issue: Issue)
     {
-        val disposable = repository.loadUser(user.profile)
+        this.issue = issue
+        view.putOnForm(issue)
+    }
+
+    override fun showIssuesGithub()
+    {
+        view.openInBrowser(issue.url)
+    }
+
+    override fun loadUserProfile()
+    {
+        val disposable = repository.loadUser(issue.user.profile)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { view.loadingUserProfile(it) }
         composite.add(disposable)
     }
 
-    override fun loadIssue(issue: Issue)
-    {
-        view.putOnForm(issue)
-    }
-
-    override fun loadComments(issue: Issue)
+    override fun loadComments()
     {
         val disposable = repository.loadIssueComments(issue.commentsUrl)
                 .subscribeOn(Schedulers.io())

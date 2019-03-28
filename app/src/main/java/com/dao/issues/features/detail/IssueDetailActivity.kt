@@ -1,5 +1,7 @@
 package com.dao.issues.features.detail
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -18,9 +20,6 @@ import com.dao.issues.model.Issue
 import com.dao.issues.model.User
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import javax.inject.Inject
-import android.content.Intent
-import android.net.Uri
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 
 
 /**
@@ -28,7 +27,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
  *
  * @author Diogo Oliveira.
  */
-class IssueDetailActivity : BaseActivity(), IssueDetailInteractor.View, Recycler.Adapter.OnCollectionChangedListener
+class IssueDetailActivity : BaseActivity(), IssueDetailInteractor.View, View.OnClickListener, Recycler.Adapter.OnCollectionChangedListener
 {
     @Inject
     lateinit var presenter: IssueDetailInteractor.Presenter
@@ -44,7 +43,6 @@ class IssueDetailActivity : BaseActivity(), IssueDetailInteractor.View, Recycler
     {
         super.onCreate(savedInstanceState)
         helper = DataBindingUtil.setContentView(this, R.layout.activity_issue_detail)
-
         presenter.initialize(this)
 
         val issue: Issue = intent.getParcelableExtra(Extras.ISSUE)
@@ -95,23 +93,22 @@ class IssueDetailActivity : BaseActivity(), IssueDetailInteractor.View, Recycler
             }
         }
 
+        adapter.setOnCollectionChangedListener(this)
+
         with(helper.contentDetail.contentCardComments.commentsList) {
             val divider = DividerItemDecoration(this@IssueDetailActivity, DividerItemDecoration.VERTICAL)
             addItemDecoration(divider)
             setHasFixedSize(true)
-        }
 
-        adapter.setOnCollectionChangedListener(this)
-        helper.contentDetail.contentCardComments.commentsList.adapter = adapter
+            adapter = this@IssueDetailActivity.adapter
+        }
 
         helper.contentDetail.scrollView.setOnScrollChangeListener { _, _, _, _, _ ->
             helper.appBar.isSelected = helper.contentDetail.scrollView.canScrollVertically(-1)
         }
 
-        helper.profileButton.setOnClickListener {
-            val issue: Issue = intent.getParcelableExtra(Extras.ISSUE)
-            presenter.loadUserProfile(issue.user)
-        }
+        helper.buttonProfile.setOnClickListener(this)
+        helper.buttonGithub.setOnClickListener(this)
     }
 
     override fun showLoading()
@@ -125,10 +122,25 @@ class IssueDetailActivity : BaseActivity(), IssueDetailInteractor.View, Recycler
         helperEmpty.progressVisibility = false
     }
 
+    override fun onClick(view: View)
+    {
+        when(view.id)
+        {
+            R.id.button_profile -> { presenter.loadUserProfile() }
+            R.id.button_github  -> { presenter.showIssuesGithub() }
+        }
+    }
+
     override fun putOnForm(issue: Issue)
     {
         helper.issue = issue
-        presenter.loadComments(issue)
+        presenter.loadComments()
+    }
+
+    override fun openInBrowser(url: String)
+    {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        startActivity(intent)
     }
 
     override fun loadingUserProfile(user: User)
@@ -141,8 +153,7 @@ class IssueDetailActivity : BaseActivity(), IssueDetailInteractor.View, Recycler
         bottomSheet.show()
 
         view.buttonGithub.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(user.profileLink))
-            startActivity(intent)
+            openInBrowser(user.profileLink)
             bottomSheet.dismiss()
         }
     }

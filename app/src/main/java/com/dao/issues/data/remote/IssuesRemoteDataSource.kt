@@ -4,7 +4,7 @@ import com.dao.issues.data.IssuesDataSourceInteractor
 import com.dao.issues.model.Comment
 import com.dao.issues.model.Issue
 import com.dao.issues.model.User
-import com.dao.issues.network.retrofit.GithubApi
+import com.dao.issues.network.GithubApi
 import io.reactivex.Observable
 import javax.inject.Inject
 import javax.inject.Singleton

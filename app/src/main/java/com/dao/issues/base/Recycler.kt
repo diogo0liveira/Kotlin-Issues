@@ -9,7 +9,6 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
-import java.util.*
 
 /**
  * Created in 26/03/19 21:56.
@@ -25,7 +24,7 @@ class Recycler
         private val restore: SparseArray<T> = SparseArray(0)
         private var collection: MutableList<T> = arrayListOf()
 
-        protected fun getItem(position: Int): T = list[position]
+        private fun getItem(position: Int): T = list[position]
 
         override fun getItemCount(): Int = list.size
 
@@ -41,122 +40,10 @@ class Recycler
             return DataBindingUtil.inflate(LayoutInflater.from(context), layout, parent, false)
         }
 
-        fun itemInsert(item: T): Boolean
-        {
-            if(list.add(item))
-            {
-                notifyItemInserted(list.indexOf(item))
-                return true
-            }
-
-            return false
-        }
-
-        fun itemChange(item: T, position: Int): Boolean
-        {
-            try
-            {
-                list[position] = item
-                notifyItemChanged(position)
-                return true
-            }
-            catch(e: Exception)
-            {
-                e.printStackTrace()
-            }
-
-            return false
-        }
-
-        fun itemRemove(item: T?, position: Int): Boolean
-        {
-            if(item != null && list.remove(item))
-            {
-                restore.put(position, item)
-                notifyItemRemoved(position)
-                return true
-            }
-
-            return false
-        }
-
-        fun itemRemove(list: SparseArray<T>?): Boolean
-        {
-            if(list != null && list.size() > 0)
-            {
-                var startPosition = Integer.MAX_VALUE
-                var position: Int
-
-                for(i in 0 until list.size())
-                {
-                    if(this.list.remove(list.valueAt(i)))
-                    {
-                        position = list.keyAt(i)
-                        restore.put(position, list.valueAt(i))
-                        startPosition = if(startPosition > position) position else startPosition
-                    }
-                }
-
-                if(startPosition >= 0)
-                {
-                    notifyItemRangeRemoved(startPosition, list.size())
-                    return true
-                }
-            }
-
-            return false
-        }
-
-        fun itemRestored(item: T, position: Int): Boolean
-        {
-            try
-            {
-                list.add(position, item)
-                notifyItemInserted(position)
-                restore.clear()
-                return true
-            }
-            catch(e: Exception)
-            {
-                e.printStackTrace()
-            }
-
-            return false
-        }
-
-        fun getDataList(): List<T>
-        {
-            return list
-        }
-
         fun setDataList(list: MutableList<T>)
         {
             this.list = list
             notifyDataSetChanged()
-        }
-
-        fun sort(comparator: Comparator<T>)
-        {
-            Collections.sort(list, comparator)
-            this.notifyDataSetChanged()
-        }
-
-        fun <R : Comparable<R>> sort(desc: Boolean = false, selector: (T) -> R)
-        {
-            if(desc)
-            {
-                setDataList(getDataList().sortedByDescending(selector).toMutableList())
-            }
-            else
-            {
-                setDataList(getDataList().sortedBy(selector).toMutableList())
-            }
-        }
-
-        fun clean()
-        {
-            list = arrayListOf()
-            this.notifyDataSetChanged()
         }
 
         fun setOnCollectionChangedListener(listener: OnCollectionChangedListener)
