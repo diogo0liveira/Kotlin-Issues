@@ -42,6 +42,7 @@ class IssuesActivity : BaseActivity(), IssuesInteractor.View, Recycler.Adapter.O
         super.onCreate(savedInstanceState)
         helper = DataBindingUtil.setContentView(this, R.layout.activity_issues)
         presenter.initialize(this)
+        loadingIssues()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean
@@ -101,9 +102,7 @@ class IssuesActivity : BaseActivity(), IssuesInteractor.View, Recycler.Adapter.O
         adapter.setOnCollectionChangedListener(this)
         helper.issuesList.adapter = adapter
 
-        helper.swipeRefresh.setOnRefreshListener { presenter.loadIssuesList() }
-
-        presenter.loadIssuesList()
+        helper.swipeRefresh.setOnRefreshListener { loadingIssues() }
     }
 
     override fun showLoading()
@@ -142,4 +141,19 @@ class IssuesActivity : BaseActivity(), IssuesInteractor.View, Recycler.Adapter.O
     {
         Toast.makeText(this, message, duration).show()
     }
+
+    private fun loadingIssues()
+    {
+        if(isNetworkConnected())
+        {
+            removeNotifyDisconnected()
+            presenter.loadIssuesList()
+        }
+        else
+        {
+            helper.swipeRefresh.isRefreshing = false
+            notifyDisconnected(helper.anchor) { loadingIssues() }
+        }
+    }
+
 }

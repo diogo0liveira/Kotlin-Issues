@@ -86,11 +86,9 @@ class IssueDetailActivity : BaseActivity(), IssueDetailInteractor.View, View.OnC
         }
         else
         {
-            with(helper.contentDetail.contentCardComments.messageEmpty) {
-                viewStub!!.visibility = View.VISIBLE
-                helperEmpty = DataBindingUtil.findBinding(this.root)!!
-                helperEmpty.emptyVisibility = true
-            }
+            helper.contentDetail.contentCardComments.messageEmpty.viewStub!!.visibility = View.VISIBLE
+            helperEmpty = DataBindingUtil.findBinding(helper.contentDetail.contentCardComments.messageEmpty.root)!!
+            helperEmpty.emptyVisibility = true
         }
 
         adapter.setOnCollectionChangedListener(this)
@@ -134,7 +132,15 @@ class IssueDetailActivity : BaseActivity(), IssueDetailInteractor.View, View.OnC
     override fun putOnForm(issue: Issue)
     {
         helper.issue = issue
-        presenter.loadComments()
+
+        if(isNetworkConnected())
+        {
+            presenter.loadComments()
+        }
+        else
+        {
+            notifyDisconnected(helper.anchor) { presenter.loadComments() }
+        }
     }
 
     override fun openInBrowser(url: String)
@@ -145,16 +151,23 @@ class IssueDetailActivity : BaseActivity(), IssueDetailInteractor.View, View.OnC
 
     override fun loadingUserProfile(user: User)
     {
-        val view: ViewUserProfileBinding = ViewUserProfileBinding.inflate(layoutInflater)
-        view.user = user
+        if(isNetworkConnected())
+        {
+            val view: ViewUserProfileBinding = ViewUserProfileBinding.inflate(layoutInflater)
+            view.user = user
 
-        val bottomSheet = BottomSheetDialog(this)
-        bottomSheet.setContentView(view.root)
-        bottomSheet.show()
+            val bottomSheet = BottomSheetDialog(this)
+            bottomSheet.setContentView(view.root)
+            bottomSheet.show()
 
-        view.buttonGithub.setOnClickListener {
-            openInBrowser(user.profileLink)
-            bottomSheet.dismiss()
+            view.buttonGithub.setOnClickListener {
+                openInBrowser(user.profileLink)
+                bottomSheet.dismiss()
+            }
+        }
+        else
+        {
+            notifyDisconnected(helper.anchor) { loadingUserProfile(user) }
         }
     }
 
