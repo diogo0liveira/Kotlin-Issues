@@ -13,7 +13,7 @@ import javax.inject.Inject
  *
  * @author Diogo Oliveira.
  */
-class KotlinApplication : Application(), HasActivityInjector
+open class KotlinApplication : Application(), HasActivityInjector
 {
     @Inject
     lateinit var dispatchingActivityInjector: DispatchingAndroidInjector<Activity>

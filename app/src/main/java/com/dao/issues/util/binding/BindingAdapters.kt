@@ -62,7 +62,8 @@ fun state(view: TextView, state: State)
     when(state)
     {
         State.OPEN  -> ViewCompat.setBackgroundTintList(view, ContextCompat.getColorStateList(view.context, R.color.state_open))
-        State.CLOSE -> ViewCompat.setBackgroundTintList(view, ContextCompat.getColorStateList(view.context, R.color.state_close))
+        State.CLOSED -> ViewCompat.setBackgroundTintList(view, ContextCompat.getColorStateList(view.context, R.color.state_closed))
+        else -> ViewCompat.setBackgroundTintList(view, ContextCompat.getColorStateList(view.context, android.R.color.darker_gray))
     }
 
     view.text = state.name

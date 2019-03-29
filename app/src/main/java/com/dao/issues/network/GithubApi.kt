@@ -1,12 +1,15 @@
 package com.dao.issues.network
 
 import com.dao.issues.API
+import com.dao.issues.KeyParameter
 import com.dao.issues.model.Comment
 import com.dao.issues.model.Issue
+import com.dao.issues.model.State
 import com.dao.issues.model.User
 import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Headers
+import retrofit2.http.Query
 import retrofit2.http.Url
 
 /**
@@ -18,7 +21,7 @@ interface GithubApi
 {
     @GET(API.URL_ISSUES)
     @Headers(ContentType.APPLICATION_JSON)
-    fun issues(): Observable<List<Issue>>
+    fun issues(@Query(KeyParameter.STATE) state: String = State.ALL.value()): Observable<List<Issue>>
 
     @GET
     @Headers(ContentType.APPLICATION_JSON)

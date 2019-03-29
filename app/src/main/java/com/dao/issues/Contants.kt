@@ -6,6 +6,7 @@ package com.dao.issues
  * @author Diogo Oliveira.
  */
 const val TAG = "Kotlin Issues"
+const val DEVELOPER_GITHUB= ("https://github.com/diogo0liveira")
 
 object Extras
 {
@@ -15,6 +16,7 @@ object Extras
 object KeyParameter
 {
     const val API_KEY = "api_key"
+    const val STATE = "state"
 }
 
 object API

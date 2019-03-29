@@ -10,7 +10,7 @@ import io.reactivex.Observable
  *
  * @author Diogo Oliveira.
  */
-interface IssuesDataSourceInteractor
+interface IssuesRepositoryInteractor
 {
     fun loadUser(url: String): Observable<User>
 

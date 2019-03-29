@@ -1,6 +1,6 @@
 package com.dao.issues.data.remote
 
-import com.dao.issues.data.IssuesDataSourceInteractor
+import com.dao.issues.data.IssuesRepositoryInteractor
 import com.dao.issues.model.Comment
 import com.dao.issues.model.Issue
 import com.dao.issues.model.User
@@ -15,7 +15,7 @@ import javax.inject.Singleton
  * @author Diogo Oliveira.
  */
 @Singleton
-class IssuesRemoteDataSource @Inject constructor(private val service: GithubApi) : IssuesDataSourceInteractor
+class IssuesRemoteRepository @Inject constructor(private val service: GithubApi) : IssuesRepositoryInteractor
 {
     override fun loadUser(url: String): Observable<User> = service.user(url)
 

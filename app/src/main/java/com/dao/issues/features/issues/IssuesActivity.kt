@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.dao.issues.DEVELOPER_GITHUB
 import com.dao.issues.Extras
 import com.dao.issues.R
 import com.dao.issues.base.BaseActivity
@@ -58,7 +59,7 @@ class IssuesActivity : BaseActivity(), IssuesInteractor.View, Recycler.Adapter.O
         {
             R.id.menu_information ->
             {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/diogo0liveira"))
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(DEVELOPER_GITHUB))
                 startActivity(intent)
                 true
             }

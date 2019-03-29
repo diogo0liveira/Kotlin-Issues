@@ -1,30 +1,26 @@
 package com.dao.issues.di.network
 
 import android.content.Context
+import androidx.test.espresso.IdlingRegistry
 import com.dao.issues.API
 import com.dao.issues.BuildConfig
-import com.dao.issues.network.authority.TokenRequestInterceptor
 import com.dao.issues.network.GithubApi
+import com.dao.issues.network.authority.TokenRequestInterceptor
+import com.jakewharton.espresso.OkHttp3IdlingResource
 import dagger.Module
 import dagger.Provides
 import okhttp3.Cache
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import okhttp3.logging.HttpLoggingInterceptor.Level
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
-/**
- * Created in 26/03/19 22:02.
- *
- * @author Diogo Oliveira.
- */
 @Module
-class NetworkModule
+class TestNetworkModule
 {
     @Provides
     @Singleton
@@ -34,16 +30,19 @@ class NetworkModule
     @Singleton
     fun provideInterceptor(): Interceptor =
             HttpLoggingInterceptor().apply {
-                level = if(BuildConfig.DEBUG) Level.BODY else Level.NONE
+                level = if(BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
             }
 
     @Provides
     @Singleton
-    fun provideRetrofit(httpClient: OkHttpClient): Retrofit =
-            Retrofit.Builder()
-                .client(httpClient)
+    fun provideRetrofit(httpClient: OkHttpClient, resource: OkHttp3IdlingResource): Retrofit
+    {
+        IdlingRegistry.getInstance().register(resource)
+
+        return Retrofit.Builder().client(httpClient)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create()).baseUrl(API.URL).build()
+    }
 
     @Provides
     @Singleton
@@ -57,6 +56,13 @@ class NetworkModule
                     .addNetworkInterceptor(interceptor)
                     .cache(cache)
                     .build()
+
+    @Provides
+    @Singleton
+    fun provideOkHttp3IdlingResource(httpClient: OkHttpClient): OkHttp3IdlingResource
+    {
+        return OkHttp3IdlingResource.create("OkHttp", httpClient)
+    }
 
     @Provides
     @Singleton

@@ -12,6 +12,14 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 enum class State : Parcelable
 {
+    @SerializedName("all")
+    ALL
+    {
+        override fun value(): String
+        {
+            return "all"
+        }
+    },
     @SerializedName("open")
     OPEN
     {
@@ -21,12 +29,12 @@ enum class State : Parcelable
         }
     },
 
-    @SerializedName("close")
-    CLOSE
+    @SerializedName("closed")
+    CLOSED
     {
         override fun value(): String
         {
-            return "close"
+            return "closed"
         }
     };
 

@@ -1,10 +1,8 @@
 package com.dao.issues.features.issues
 
-import com.dao.issues.data.IssuesDataSourceInteractor
+import com.dao.issues.data.IssuesRepositoryInteractor
 import com.dao.issues.data.repository.IssuesRepository
-import com.dao.issues.model.Issue
 import com.dao.issues.util.SchedulerProvider
-import io.reactivex.Observable
 import io.reactivex.schedulers.TestScheduler
 import org.junit.Before
 import org.junit.FixMethodOrder
@@ -25,7 +23,7 @@ class IssuesPresenterTest
     @Mock
     private lateinit var view: IssuesInteractor.View
     @Mock
-    private lateinit var repository: IssuesDataSourceInteractor
+    private lateinit var repository: IssuesRepositoryInteractor
 
     private val schedulerProvider = SchedulerProvider(TestScheduler(), TestScheduler())
     private lateinit var presenter: IssuesPresenter
@@ -45,11 +43,38 @@ class IssuesPresenterTest
     }
 
     @Test
-    fun loadIssuesList()
+    fun `show loading`()
     {
-        doReturn(Observable.just(listOf<Issue>())).`when`(repository).loadIssues()
-
         presenter.loadIssuesList()
-        verify(view).loadingIssuesList(listOf())
+        verify(view).showLoading()
     }
+
+    @Test
+    fun `hide loading`()
+    {
+        presenter.loadIssuesList()
+        verify(view).hideLoading()
+    }
+
+    @Test
+    fun `load issues`()
+    {
+        presenter.loadIssuesList()
+        verify(repository).loadIssues()
+    }
+
+    @Test
+    fun `show load issues`()
+    {
+
+    }
+
+//    @Test
+//    fun loadIssuesList()
+//    {
+//        doReturn(Observable.just(listOf<Issue>())).`when`(repository).loadIssues()
+//
+//        presenter.loadIssuesList()
+//        verify(view).loadingIssuesList(listOf())
+//    }
 }

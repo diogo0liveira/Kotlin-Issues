@@ -8,5 +8,5 @@
     <color name="activated_background">#E0E0E0</color>
 
     <color name="state_open">#4CAF50</color>
-    <color name="state_close">#F44336</color>
+    <color name="state_closed">#F44336</color>
 </resources>

@@ -1,8 +1,8 @@
 package com.dao.issues.data.repository
 
 import com.dao.issues.base.mvp.Repository
-import com.dao.issues.data.IssuesDataSourceInteractor
-import com.dao.issues.data.remote.IssuesRemoteDataSource
+import com.dao.issues.data.IssuesRepositoryInteractor
+import com.dao.issues.data.remote.IssuesRemoteRepository
 import com.dao.issues.model.Comment
 import com.dao.issues.model.Issue
 import com.dao.issues.model.User
@@ -16,8 +16,8 @@ import javax.inject.Singleton
  * @author Diogo Oliveira.
  */
 @Singleton
-class IssuesRepository @Inject constructor(remote: IssuesRemoteDataSource):
-        Repository<Any, IssuesRemoteDataSource>(Any(), remote), IssuesDataSourceInteractor
+class IssuesRepository @Inject constructor(remote: IssuesRemoteRepository):
+        Repository<Any, IssuesRemoteRepository>(Any(), remote), IssuesRepositoryInteractor
 {
     override fun loadUser(url: String): Observable<User> = remote.loadUser(url)
 
