@@ -12,7 +12,7 @@ import javax.inject.Singleton
  *
  * @author Diogo Oliveira.
  */
-@Module(includes = [NetworkModule::class])
+@Module(includes = [RxModule::class, NetworkModule::class])
 class AppModule
 {
     @Provides

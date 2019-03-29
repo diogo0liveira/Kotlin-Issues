@@ -4,6 +4,7 @@ import com.dao.issues.di.annotations.ActivityScoped
 import com.dao.issues.data.repository.IssuesRepository
 import dagger.Module
 import dagger.Provides
+import io.reactivex.Scheduler
 
 /**
  * Created in 26/03/19 22:44.
@@ -15,8 +16,8 @@ class IssuesModule
 {
     @Provides
     @ActivityScoped
-    fun provideIssuesPresenter(repository: IssuesRepository): IssuesInteractor.Presenter
+    fun provideIssuesPresenter(repository: IssuesRepository, schedulerAndroid: Scheduler, schedulerIO: Scheduler): IssuesInteractor.Presenter
     {
-        return IssuesPresenter(repository)
+        return IssuesPresenter(repository, schedulerAndroid, schedulerIO)
     }
 }
