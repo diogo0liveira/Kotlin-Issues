@@ -2,16 +2,17 @@ package com.dao.issues.features.detail
 
 import com.dao.issues.data.repository.IssuesRepository
 import com.dao.issues.model.Issue
-import io.reactivex.android.schedulers.AndroidSchedulers
+import com.dao.issues.util.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 
 /**
  * Created in 27/03/19 12:05.
  *
  * @author Diogo Oliveira.
  */
-class IssueDetailPresenter constructor(private val repository: IssuesRepository) : IssueDetailInteractor.Presenter
+class IssueDetailPresenter constructor(
+        private val repository: IssuesRepository,
+        private val schedulerProvider: SchedulerProvider) : IssueDetailInteractor.Presenter
 {
     private lateinit var view: IssueDetailInteractor.View
     private lateinit var issue: Issue
@@ -43,20 +44,20 @@ class IssueDetailPresenter constructor(private val repository: IssuesRepository)
     override fun loadUserProfile()
     {
         val disposable = repository.loadUser(issue.user.profile)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { view.loadingUserProfile(it) }
+                .compose(schedulerProvider.applySchedulers())
+                .subscribe({ view.loadingUserProfile(it) },
+                           { view.executeRequireNetwork { loadUserProfile() } })
         composite.add(disposable)
     }
 
     override fun loadComments()
     {
         val disposable = repository.loadIssueComments(issue.commentsUrl)
-                .subscribeOn(Schedulers.io())
+                .compose(schedulerProvider.applySchedulers())
                 .doOnSubscribe { view.showLoading() }
                 .doOnTerminate { view.hideLoading() }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { view.loadingComments(it) }
+                .subscribe({ view.loadingComments(it) },
+                           { view.executeRequireNetwork { loadComments() } })
 
         composite.add(disposable)
     }

@@ -21,7 +21,6 @@ import com.dao.issues.model.User
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import javax.inject.Inject
 
-
 /**
  * Created in 27/03/19 10:53.
  *
@@ -124,23 +123,15 @@ class IssueDetailActivity : BaseActivity(), IssueDetailInteractor.View, View.OnC
     {
         when(view.id)
         {
-            R.id.button_profile -> { presenter.loadUserProfile() }
-            R.id.button_github  -> { presenter.showIssuesGithub() }
+            R.id.button_profile -> { executeRequireNetwork { presenter.loadUserProfile() } }
+            R.id.button_github -> { presenter.showIssuesGithub() }
         }
     }
 
     override fun putOnForm(issue: Issue)
     {
         helper.issue = issue
-
-        if(isNetworkConnected())
-        {
-            presenter.loadComments()
-        }
-        else
-        {
-            notifyDisconnected(helper.anchor) { presenter.loadComments() }
-        }
+        executeRequireNetwork { presenter.loadComments() }
     }
 
     override fun openInBrowser(url: String)
@@ -151,23 +142,16 @@ class IssueDetailActivity : BaseActivity(), IssueDetailInteractor.View, View.OnC
 
     override fun loadingUserProfile(user: User)
     {
-        if(isNetworkConnected())
-        {
-            val view: ViewUserProfileBinding = ViewUserProfileBinding.inflate(layoutInflater)
-            view.user = user
+        val view: ViewUserProfileBinding = ViewUserProfileBinding.inflate(layoutInflater)
+        view.user = user
 
-            val bottomSheet = BottomSheetDialog(this)
-            bottomSheet.setContentView(view.root)
-            bottomSheet.show()
+        val bottomSheet = BottomSheetDialog(this)
+        bottomSheet.setContentView(view.root)
+        bottomSheet.show()
 
-            view.buttonGithub.setOnClickListener {
-                openInBrowser(user.profileLink)
-                bottomSheet.dismiss()
-            }
-        }
-        else
-        {
-            notifyDisconnected(helper.anchor) { loadingUserProfile(user) }
+        view.buttonGithub.setOnClickListener {
+            openInBrowser(user.profileLink)
+            bottomSheet.dismiss()
         }
     }
 
@@ -179,6 +163,19 @@ class IssueDetailActivity : BaseActivity(), IssueDetailInteractor.View, View.OnC
     override fun onCollectionChanged(isEmpty: Boolean)
     {
         helperEmpty.emptyVisibility = isEmpty
+    }
+
+    override fun executeRequireNetwork(block: () -> Unit)
+    {
+        if(isNetworkConnected())
+        {
+            removeNotifyDisconnected()
+            block()
+        }
+        else
+        {
+            notifyDisconnected(helper.anchor) { executeRequireNetwork(block) }
+        }
     }
 
     override fun toast(message: Int, duration: Int)

@@ -1,9 +1,8 @@
 package com.dao.issues.features.issues
 
 import com.dao.issues.data.repository.IssuesRepository
-import io.reactivex.Scheduler
+import com.dao.issues.util.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 
 /**
  * Created in 26/03/19 21:51.
@@ -12,8 +11,7 @@ import io.reactivex.schedulers.Schedulers
  */
 class IssuesPresenter constructor(
         private val repository: IssuesRepository,
-        private val schedulerAndroid: Scheduler,
-        private val schedulerIO: Scheduler) : IssuesInteractor.Presenter
+        private val schedulerProvider: SchedulerProvider) : IssuesInteractor.Presenter
 {
     private lateinit var view: IssuesInteractor.View
     private val composite: CompositeDisposable = CompositeDisposable()
@@ -32,11 +30,11 @@ class IssuesPresenter constructor(
     override fun loadIssuesList()
     {
         val disposable = repository.loadIssues()
-                .subscribeOn(schedulerIO)
-                .observeOn(schedulerAndroid)
+                .compose(schedulerProvider.applySchedulers())
                 .doOnSubscribe { view.showLoading() }
                 .doOnTerminate { view.hideLoading() }
-                .subscribe { view.loadingIssuesList(it) }
+                .subscribe({ view.loadingIssuesList(it)},
+                           { view.executeRequireNetwork { loadIssuesList() } })
 
         composite.add(disposable)
     }

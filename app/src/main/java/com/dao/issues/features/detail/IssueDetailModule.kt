@@ -2,6 +2,7 @@ package com.dao.issues.features.detail
 
 import com.dao.issues.data.repository.IssuesRepository
 import com.dao.issues.di.annotations.ActivityScoped
+import com.dao.issues.util.SchedulerProvider
 import dagger.Module
 import dagger.Provides
 
@@ -15,8 +16,8 @@ class IssueDetailModule
 {
     @Provides
     @ActivityScoped
-    fun provideIssueDetailPresenter(repository: IssuesRepository): IssueDetailInteractor.Presenter
+    fun provideIssueDetailPresenter(repository: IssuesRepository, schedulerProvider: SchedulerProvider): IssueDetailInteractor.Presenter
     {
-        return IssueDetailPresenter(repository)
+        return IssueDetailPresenter(repository, schedulerProvider)
     }
 }

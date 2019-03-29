@@ -19,6 +19,8 @@ interface IssuesInteractor
 
         fun startIssuesDetailActivity(issue: Issue)
 
+        fun executeRequireNetwork(block: () -> Unit)
+
         fun toast(@StringRes message: Int, @Duration duration: Int)
     }
 

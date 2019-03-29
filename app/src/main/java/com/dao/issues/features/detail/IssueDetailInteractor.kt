@@ -25,6 +25,8 @@ interface IssueDetailInteractor
 
         fun loadingComments(comments: List<Comment>)
 
+        fun executeRequireNetwork(block: () -> Unit)
+
         fun toast(@StringRes message: Int, @Duration duration: Int)
     }
 
