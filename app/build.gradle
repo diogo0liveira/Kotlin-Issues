@@ -19,7 +19,6 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
 
         vectorDrawables.useSupportLibrary = true
-//        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunner "com.dao.issues.TestAndroidJUnitRunner"
         buildConfigField 'String', 'GITHUB_API_KEY', keystoreProperties['GITHUB_API_KEY']
     }
