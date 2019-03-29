@@ -1,16 +1,19 @@
 package com.dao.issues.features.issues
 
 import com.dao.issues.data.IssuesRepositoryInteractor
-import com.dao.issues.data.repository.IssuesRepository
+import com.dao.issues.model.Issue
 import com.dao.issues.util.SchedulerProvider
-import io.reactivex.schedulers.TestScheduler
+import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
 import org.junit.Before
 import org.junit.FixMethodOrder
 import org.junit.Test
 import org.junit.runners.MethodSorters
 import org.mockito.Mock
-import org.mockito.Mockito.*
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
+
 
 /**
  * Created in 28/03/19 22:04.
@@ -25,14 +28,14 @@ class IssuesPresenterTest
     @Mock
     private lateinit var repository: IssuesRepositoryInteractor
 
-    private val schedulerProvider = SchedulerProvider(TestScheduler(), TestScheduler())
+    private val schedulerProvider = SchedulerProvider(Schedulers.trampoline(), Schedulers.trampoline())
     private lateinit var presenter: IssuesPresenter
 
     @Before
     fun setUp()
     {
         MockitoAnnotations.initMocks(this)
-        presenter = IssuesPresenter(mock(IssuesRepository::class.java), schedulerProvider)
+        presenter = IssuesPresenter(repository, schedulerProvider)
         presenter.initialize(view)
     }
 
@@ -42,39 +45,14 @@ class IssuesPresenterTest
         verify(view).initializeView()
     }
 
-    @Test
-    fun `show loading`()
-    {
-        presenter.loadIssuesList()
-        verify(view).showLoading()
-    }
-
-    @Test
-    fun `hide loading`()
-    {
-        presenter.loadIssuesList()
-        verify(view).hideLoading()
-    }
 
     @Test
     fun `load issues`()
     {
+        val issues = listOf<Issue>()
+        `when`(repository.loadIssues()).thenReturn(Observable.just<List<Issue>>(issues))
+
         presenter.loadIssuesList()
-        verify(repository).loadIssues()
+        verify(view).loadingIssuesList(issues)
     }
-
-    @Test
-    fun `show load issues`()
-    {
-
-    }
-
-//    @Test
-//    fun loadIssuesList()
-//    {
-//        doReturn(Observable.just(listOf<Issue>())).`when`(repository).loadIssues()
-//
-//        presenter.loadIssuesList()
-//        verify(view).loadingIssuesList(listOf())
-//    }
 }
