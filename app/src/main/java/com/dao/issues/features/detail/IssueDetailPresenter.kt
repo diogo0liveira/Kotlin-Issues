@@ -1,6 +1,6 @@
 package com.dao.issues.features.detail
 
-import com.dao.issues.data.repository.IssuesRepository
+import com.dao.issues.data.IssuesDataSourceInteractor
 import com.dao.issues.model.Issue
 import com.dao.issues.util.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable
@@ -11,7 +11,7 @@ import io.reactivex.disposables.CompositeDisposable
  * @author Diogo Oliveira.
  */
 class IssueDetailPresenter constructor(
-        private val repository: IssuesRepository,
+        private val repository: IssuesDataSourceInteractor,
         private val schedulerProvider: SchedulerProvider) : IssueDetailInteractor.Presenter
 {
     private lateinit var view: IssueDetailInteractor.View

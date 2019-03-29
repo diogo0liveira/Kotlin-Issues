@@ -27,8 +27,7 @@ class IssuesPresenterTest
     @Mock
     private lateinit var repository: IssuesDataSourceInteractor
 
-    private val scheduleTest = TestScheduler()
-    private val schedulerProvider = SchedulerProvider(scheduleTest, scheduleTest)
+    private val schedulerProvider = SchedulerProvider(TestScheduler(), TestScheduler())
     private lateinit var presenter: IssuesPresenter
 
     @Before
