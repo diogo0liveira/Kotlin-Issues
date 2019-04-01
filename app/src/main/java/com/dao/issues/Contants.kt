@@ -13,16 +13,22 @@ object Extras
     const val ISSUE = "ISSUE"
 }
 
+object KeyHeader
+{
+    const val ACCEPT = "Accept"
+}
+
 object KeyParameter
 {
     const val API_KEY = "api_key"
     const val STATE = "state"
 }
 
-object API
+object GithubApi
 {
+    const val VERSION = "application/vnd.github.v3+json"
+    const val KEY = BuildConfig.GITHUB_API_KEY
     const val URL = "https://api.github.com"
-    const val API_KEY = BuildConfig.GITHUB_API_KEY
 
-    const val URL_ISSUES = ("$URL/repos/JetBrains/kotlin/issues")
+    const val ISSUES = ("$URL/repos/JetBrains/kotlin/issues")
 }

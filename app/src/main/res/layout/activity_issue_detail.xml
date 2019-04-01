@@ -51,8 +51,8 @@
 
                     <ImageView
                         android:id="@+id/button_profile"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:foreground="?selectableItemBackground"
                         app:avatar="@{issue.user.avatar}"
                         tools:srcCompat="@drawable/ic_account_circle_24dp"

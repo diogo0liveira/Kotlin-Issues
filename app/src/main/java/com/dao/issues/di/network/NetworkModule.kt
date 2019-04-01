@@ -1,10 +1,11 @@
 package com.dao.issues.di.network
 
 import android.content.Context
-import com.dao.issues.API
 import com.dao.issues.BuildConfig
-import com.dao.issues.network.authority.TokenRequestInterceptor
-import com.dao.issues.network.GithubApi
+import com.dao.issues.GithubApi
+import com.dao.issues.network.Github
+import com.dao.issues.network.interceptor.GithubVersionInterceptor
+import com.dao.issues.network.interceptor.TokenRequestInterceptor
 import dagger.Module
 import dagger.Provides
 import okhttp3.Cache
@@ -39,29 +40,30 @@ class NetworkModule
 
     @Provides
     @Singleton
-    fun provideRetrofit(httpClient: OkHttpClient): Retrofit =
-            Retrofit.Builder()
-                .client(httpClient)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create()).baseUrl(API.URL).build()
-
-    @Provides
-    @Singleton
     fun provideHttpClient(interceptor: Interceptor, cache: Cache): OkHttpClient =
             OkHttpClient
                     .Builder()
                     .connectTimeout(10L, TimeUnit.SECONDS)
                     .writeTimeout(10L, TimeUnit.SECONDS)
                     .readTimeout(10L, TimeUnit.SECONDS)
+                    .addInterceptor(GithubVersionInterceptor())
                     .addInterceptor(TokenRequestInterceptor())
                     .addNetworkInterceptor(interceptor)
                     .cache(cache)
                     .build()
+    @Provides
+    @Singleton
+    fun provideRetrofit(httpClient: OkHttpClient): Retrofit =
+            Retrofit.Builder()
+                .client(httpClient)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create()).baseUrl(GithubApi.URL).build()
+
 
     @Provides
     @Singleton
-    fun provideNetworkService(retrofit: Retrofit): GithubApi
+    fun provideNetworkService(retrofit: Retrofit): Github
     {
-        return retrofit.create(GithubApi::class.java)
+        return retrofit.create(Github::class.java)
     }
 }

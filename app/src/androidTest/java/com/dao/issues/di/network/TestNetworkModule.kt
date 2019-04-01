@@ -2,10 +2,9 @@ package com.dao.issues.di.network
 
 import android.content.Context
 import androidx.test.espresso.IdlingRegistry
-import com.dao.issues.API
 import com.dao.issues.BuildConfig
-import com.dao.issues.network.GithubApi
-import com.dao.issues.network.authority.TokenRequestInterceptor
+import com.dao.issues.GithubApi
+import com.dao.issues.network.interceptor.TokenRequestInterceptor
 import com.jakewharton.espresso.OkHttp3IdlingResource
 import dagger.Module
 import dagger.Provides
@@ -41,7 +40,7 @@ class TestNetworkModule
 
         return Retrofit.Builder().client(httpClient)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create()).baseUrl(API.URL).build()
+                .addConverterFactory(GsonConverterFactory.create()).baseUrl(GithubApi.URL).build()
     }
 
     @Provides

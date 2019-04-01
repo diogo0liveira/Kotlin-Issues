@@ -1,6 +1,6 @@
-package com.dao.issues.network.authority
+package com.dao.issues.network.interceptor
 
-import com.dao.issues.API.API_KEY
+import com.dao.issues.GithubApi
 import com.dao.issues.KeyParameter
 import okhttp3.HttpUrl
 import okhttp3.Interceptor
@@ -19,7 +19,7 @@ class TokenRequestInterceptor : Interceptor
         if(!chain.request().url().encodedPath().contains(KeyParameter.API_KEY))
         {
             val request: Request = chain.request()
-            val url: HttpUrl = request.url().newBuilder().addQueryParameter(KeyParameter.API_KEY, API_KEY).build()
+            val url: HttpUrl = request.url().newBuilder().addQueryParameter(KeyParameter.API_KEY, GithubApi.KEY).build()
             val requestBuilder: Request.Builder = request.newBuilder().url(url)
             return chain.proceed(requestBuilder.build())
         }

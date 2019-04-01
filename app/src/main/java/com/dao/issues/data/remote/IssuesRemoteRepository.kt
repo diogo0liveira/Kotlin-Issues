@@ -4,7 +4,7 @@ import com.dao.issues.data.IssuesRepositoryInteractor
 import com.dao.issues.model.Comment
 import com.dao.issues.model.Issue
 import com.dao.issues.model.User
-import com.dao.issues.network.GithubApi
+import com.dao.issues.network.Github
 import io.reactivex.Observable
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -15,7 +15,7 @@ import javax.inject.Singleton
  * @author Diogo Oliveira.
  */
 @Singleton
-class IssuesRemoteRepository @Inject constructor(private val service: GithubApi) : IssuesRepositoryInteractor
+class IssuesRemoteRepository @Inject constructor(private val service: Github) : IssuesRepositoryInteractor
 {
     override fun loadUser(url: String): Observable<User> = service.user(url)
 
