@@ -3,9 +3,10 @@ package com.dao.issues.features.issues
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.dao.issues.R
-import com.dao.issues.base.Recycler
+import com.dao.issues.base.paging.Recycler
 import com.dao.issues.databinding.ViewRowIssueBinding
 import com.dao.issues.model.Issue
 
@@ -18,7 +19,7 @@ class IssuesAdapter(
         context: Context,
         list: MutableList<Issue>,
         private val listener: IssueViewOnClickListener) :
-        Recycler.Adapter<Issue, IssuesAdapter.ViewHolder>(context, list)
+        Recycler.Adapter<Issue, IssuesAdapter.ViewHolder>(context, list, COMPARATOR)
 {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder
     {
@@ -26,7 +27,7 @@ class IssuesAdapter(
         return ViewHolder(binding, listener)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, item: Issue)
+    override fun onBindViewHolder(holder: ViewHolder, item: Issue?)
     {
         holder.binding.issue = item
     }
@@ -44,6 +45,15 @@ class IssuesAdapter(
             listener.onIssueViewOnClick(binding.issue!!)
         }
 
+    }
+
+    companion object
+    {
+        private val COMPARATOR = object : DiffUtil.ItemCallback<Issue>()
+        {
+            override fun areItemsTheSame(oldItem: Issue, newItem: Issue) = (oldItem.number == newItem.number)
+            override fun areContentsTheSame(oldItem: Issue, newItem: Issue) = (oldItem == newItem)
+        }
     }
 
     interface IssueViewOnClickListener

@@ -6,6 +6,7 @@ import com.dao.issues.model.Issue
 import com.dao.issues.model.User
 import com.dao.issues.network.Github
 import io.reactivex.Observable
+import retrofit2.Response
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -19,7 +20,7 @@ class IssuesRemoteRepository @Inject constructor(private val service: Github) : 
 {
     override fun loadUser(url: String): Observable<User> = service.user(url)
 
-    override fun loadIssues(): Observable<List<Issue>> = service.issues()
+    override fun loadIssues(page: Int): Observable<Response<List<Issue>>> = service.issues(page)
 
     override fun loadIssueComments(url: String): Observable<List<Comment>>
     {

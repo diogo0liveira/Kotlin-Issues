@@ -22,6 +22,7 @@ object KeyParameter
 {
     const val API_KEY = "api_key"
     const val STATE = "state"
+    const val PAGE = "page"
 }
 
 object GithubApi

@@ -34,6 +34,7 @@ ext {
     targetSdkVersion = 28
     compileSdkVersion = 28
 
+    pagingVersion = '2.1.0'
     cardviewVersion = '1.0.0'
     materialVersion = '1.1.0-alpha04'
     appcompatVersion = '1.1.0-alpha03'

@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.dao.issues.Extras
 import com.dao.issues.R
 import com.dao.issues.base.BaseActivity
-import com.dao.issues.base.Recycler
+import com.dao.issues.base.OnCollectionChangedListener
 import com.dao.issues.databinding.ActivityIssueDetailBinding
 import com.dao.issues.databinding.ViewEmptyCommentsBinding
 import com.dao.issues.databinding.ViewUserProfileBinding
@@ -26,7 +26,7 @@ import javax.inject.Inject
  *
  * @author Diogo Oliveira.
  */
-class IssueDetailActivity : BaseActivity(), IssueDetailInteractor.View, View.OnClickListener, Recycler.Adapter.OnCollectionChangedListener
+class IssueDetailActivity : BaseActivity(), IssueDetailInteractor.View, View.OnClickListener, OnCollectionChangedListener
 {
     @Inject
     lateinit var presenter: IssueDetailInteractor.Presenter

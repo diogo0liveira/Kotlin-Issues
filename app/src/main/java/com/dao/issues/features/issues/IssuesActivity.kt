@@ -8,16 +8,18 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.dao.issues.DEVELOPER_GITHUB
 import com.dao.issues.Extras
 import com.dao.issues.R
 import com.dao.issues.base.BaseActivity
-import com.dao.issues.base.Recycler
+import com.dao.issues.base.OnCollectionChangedListener
 import com.dao.issues.databinding.ActivityIssuesBinding
 import com.dao.issues.databinding.ViewEmptyIssuesBinding
 import com.dao.issues.features.detail.IssueDetailActivity
 import com.dao.issues.model.Issue
+import com.dao.issues.network.State
 import javax.inject.Inject
 
 /**
@@ -25,7 +27,7 @@ import javax.inject.Inject
  *
  * @author Diogo Oliveira.
  */
-class IssuesActivity : BaseActivity(), IssuesInteractor.View, Recycler.Adapter.OnCollectionChangedListener, IssuesAdapter.IssueViewOnClickListener
+class IssuesActivity : BaseActivity(), IssuesInteractor.View, OnCollectionChangedListener, IssuesAdapter.IssueViewOnClickListener
 {
     @Inject
     lateinit var presenter: IssuesInteractor.Presenter
@@ -103,6 +105,17 @@ class IssuesActivity : BaseActivity(), IssuesInteractor.View, Recycler.Adapter.O
 
         adapter.setOnCollectionChangedListener(this)
         helper.issuesList.adapter = adapter
+
+        presenter.issuesObserver().observe(this, Observer { adapter.submitList(it) })
+
+        presenter.getNetworkState().observe(this, Observer {
+            when(it.status)
+            {
+                State.RUNNING -> showLoading()
+                State.SUCCESS -> hideLoading()
+                State.FAILED -> toast(R.string.app_internal_no_connection, Toast.LENGTH_LONG)
+            }
+        })
 
         helper.swipeRefresh.setOnRefreshListener { executeRequireNetwork { presenter.loadIssuesList() } }
     }

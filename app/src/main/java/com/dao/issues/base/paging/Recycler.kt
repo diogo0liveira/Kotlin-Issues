@@ -1,4 +1,4 @@
-package com.dao.issues.base
+package com.dao.issues.base.paging
 
 import android.content.Context
 import android.os.Parcelable
@@ -7,7 +7,10 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.dao.issues.base.OnCollectionChangedListener
 
 /**
  * Created in 26/03/19 21:56.
@@ -18,11 +21,10 @@ class Recycler
 {
     abstract class Adapter<T : Parcelable, V : RecyclerView.ViewHolder> constructor(
             private val context: Context,
-            private var list: MutableList<T>) : RecyclerView.Adapter<V>()
+            private var list: MutableList<T>,
+            comparator: DiffUtil.ItemCallback<T>) : PagedListAdapter<T, V>(comparator)
     {
         private var changedListener: OnCollectionChangedListener? = null
-
-        private fun getItem(position: Int): T = list[position]
 
         override fun getItemCount(): Int = list.size
 
@@ -31,7 +33,7 @@ class Recycler
             onBindViewHolder(holder, getItem(position))
         }
 
-        abstract fun onBindViewHolder(holder: V, item: T)
+        abstract fun onBindViewHolder(holder: V, item: T?)
 
         protected fun <H : ViewDataBinding> inflate(parent: ViewGroup, @LayoutRes layout: Int): H
         {

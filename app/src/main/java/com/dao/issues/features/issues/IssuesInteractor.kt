@@ -1,9 +1,12 @@
 package com.dao.issues.features.issues
 
 import androidx.annotation.StringRes
+import androidx.lifecycle.LiveData
+import androidx.paging.PagedList
 import com.dao.issues.base.mvp.IPresenter
 import com.dao.issues.base.mvp.IView
 import com.dao.issues.model.Issue
+import com.dao.issues.network.NetworkState
 import com.dao.issues.util.annotation.Duration
 
 /**
@@ -27,5 +30,11 @@ interface IssuesInteractor
     interface Presenter : IPresenter<View>
     {
         fun loadIssuesList()
+
+        fun issuesObserver(): LiveData<PagedList<Issue>>
+
+        fun loadIssues(): LiveData<NetworkState>
+
+        fun getNetworkState(): LiveData<NetworkState>
     }
 }
