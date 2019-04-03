@@ -23,9 +23,7 @@ class IssuesPresenter constructor(private val factory: IssuesDataSourceFactory) 
 
     init {
         val config = PagedList.Config.Builder()
-                .setInitialLoadSizeHint(75)
-                .setPageSize(15)
-                .setEnablePlaceholders(false).build()
+                .setPageSize(30).build()
 
         issues = LivePagedListBuilder<Int, Issue>(factory, config).build()
 
