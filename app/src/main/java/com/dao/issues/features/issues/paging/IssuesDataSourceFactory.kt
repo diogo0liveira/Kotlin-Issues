@@ -11,13 +11,13 @@ import javax.inject.Inject
  * @author Diogo Oliveira.
  */
 class IssuesDataSourceFactory @Inject constructor(
-        private val dataSource: IssuesPageKeyedDataSource): DataSource.Factory<Int, Issue>()
+        private val issuesDataSource: IssuesPageKeyedDataSource): DataSource.Factory<Int, Issue>()
 {
     val source = MutableLiveData<IssuesPageKeyedDataSource>()
 
     override fun create(): DataSource<Int, Issue>
     {
-        this.source.postValue(dataSource)
-        return dataSource
+        this.source.postValue(issuesDataSource)
+        return issuesDataSource
     }
 }
