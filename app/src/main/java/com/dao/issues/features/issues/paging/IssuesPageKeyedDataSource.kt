@@ -1,14 +1,13 @@
 package com.dao.issues.features.issues.paging
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import com.dao.issues.data.IssuesRepositoryInteractor
 import com.dao.issues.model.Issue
 import com.dao.issues.network.NetworkState
+import com.dao.issues.util.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Consumer
-import io.reactivex.schedulers.Schedulers
 import okhttp3.Headers
 import retrofit2.Response
 import javax.inject.Inject
@@ -20,6 +19,7 @@ import javax.inject.Inject
  */
 class IssuesPageKeyedDataSource @Inject constructor(
         private val composite: CompositeDisposable,
+        private val schedulerProvider: SchedulerProvider,
         private val repository: IssuesRepositoryInteractor) : PageKeyedDataSource<Int, Issue>()
 {
     val networkState = MutableLiveData<NetworkState>()
@@ -41,7 +41,7 @@ class IssuesPageKeyedDataSource @Inject constructor(
         val disposable = repository.loadIssues(1)
                 .doOnSubscribe { networkState.postValue(NetworkState.LOADING) }
                 .doOnTerminate { networkState.postValue(NetworkState.LOADED) }
-                .subscribeOn(Schedulers.io())
+                .compose(schedulerProvider.applySchedulers())
                 .subscribe(consumer, error)
 
         composite.add(disposable)
@@ -53,7 +53,6 @@ class IssuesPageKeyedDataSource @Inject constructor(
             if(response.isSuccessful)
             {
                 val limits = getPagination(response.headers())
-                Log.e("TAG", limits.toString())
                 callback.onResult(response.body() ?: emptyList(), limits["next"])
             }
         }
@@ -65,7 +64,7 @@ class IssuesPageKeyedDataSource @Inject constructor(
        val disposable = repository.loadIssues(params.requestedLoadSize)
                .doOnSubscribe { networkState.postValue(NetworkState.LOADING) }
                .doOnTerminate { networkState.postValue(NetworkState.LOADED) }
-               .subscribeOn(Schedulers.io())
+               .compose(schedulerProvider.applySchedulers())
                .subscribe(consumer, error)
 
         composite.add(disposable)

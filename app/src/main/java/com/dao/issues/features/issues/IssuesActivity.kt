@@ -44,7 +44,6 @@ class IssuesActivity : BaseActivity(), IssuesInteractor.View, OnCollectionChange
         helper = DataBindingUtil.setContentView(this, R.layout.activity_issues)
 
         presenter.initialize(this)
-        executeRequireNetwork {  }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean
