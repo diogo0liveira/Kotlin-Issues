@@ -17,9 +17,8 @@ import com.dao.issues.model.Issue
  */
 class IssuesAdapter(
         context: Context,
-        list: MutableList<Issue>,
         private val listener: IssueViewOnClickListener) :
-        Recycler.Adapter<Issue, IssuesAdapter.ViewHolder>(context, list, COMPARATOR)
+        Recycler.Adapter<Issue, IssuesAdapter.ViewHolder>(context, COMPARATOR)
 {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder
     {

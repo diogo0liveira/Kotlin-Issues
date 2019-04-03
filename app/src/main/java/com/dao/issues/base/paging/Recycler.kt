@@ -21,12 +21,9 @@ class Recycler
 {
     abstract class Adapter<T : Parcelable, V : RecyclerView.ViewHolder> constructor(
             private val context: Context,
-            private var list: MutableList<T>,
             comparator: DiffUtil.ItemCallback<T>) : PagedListAdapter<T, V>(comparator)
     {
         private var changedListener: OnCollectionChangedListener? = null
-
-        override fun getItemCount(): Int = list.size
 
         override fun onBindViewHolder(holder: V, position: Int)
         {
@@ -38,12 +35,6 @@ class Recycler
         protected fun <H : ViewDataBinding> inflate(parent: ViewGroup, @LayoutRes layout: Int): H
         {
             return DataBindingUtil.inflate(LayoutInflater.from(context), layout, parent, false)
-        }
-
-        fun setDataList(list: MutableList<T>)
-        {
-            this.list = list
-            notifyDataSetChanged()
         }
 
         fun setOnCollectionChangedListener(listener: OnCollectionChangedListener)

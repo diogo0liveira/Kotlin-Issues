@@ -35,9 +35,7 @@ class IssuesActivity : BaseActivity(), IssuesInteractor.View, OnCollectionChange
     private lateinit var helperEmpty: ViewEmptyIssuesBinding
     private lateinit var helper: ActivityIssuesBinding
 
-    private val adapter: IssuesAdapter by lazy {
-        IssuesAdapter(this, mutableListOf(), this)
-    }
+    private val adapter: IssuesAdapter by lazy { IssuesAdapter(this, this) }
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -103,7 +101,7 @@ class IssuesActivity : BaseActivity(), IssuesInteractor.View, OnCollectionChange
             setHasFixedSize(true)
         }
 
-//        adapter.setOnCollectionChangedListener(this)
+        adapter.setOnCollectionChangedListener(this)
         helper.issuesList.adapter = adapter
 
         presenter.issuesObserver().observe(this, Observer { adapter.submitList(it) })
@@ -140,11 +138,6 @@ class IssuesActivity : BaseActivity(), IssuesInteractor.View, OnCollectionChange
         val intent = Intent(this, IssueDetailActivity::class.java)
         intent.putExtra(Extras.ISSUE, issue)
         startActivity(intent)
-    }
-
-    override fun loadingIssuesList(issues: List<Issue>)
-    {
-//        adapter.setDataList(issues.toMutableList())
     }
 
     override fun onCollectionChanged(isEmpty: Boolean)
