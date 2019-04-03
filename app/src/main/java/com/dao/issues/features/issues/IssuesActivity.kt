@@ -103,7 +103,7 @@ class IssuesActivity : BaseActivity(), IssuesInteractor.View, OnCollectionChange
             setHasFixedSize(true)
         }
 
-        adapter.setOnCollectionChangedListener(this)
+//        adapter.setOnCollectionChangedListener(this)
         helper.issuesList.adapter = adapter
 
         presenter.issuesObserver().observe(this, Observer { adapter.submitList(it) })
@@ -144,7 +144,7 @@ class IssuesActivity : BaseActivity(), IssuesInteractor.View, OnCollectionChange
 
     override fun loadingIssuesList(issues: List<Issue>)
     {
-        adapter.setDataList(issues.toMutableList())
+//        adapter.setDataList(issues.toMutableList())
     }
 
     override fun onCollectionChanged(isEmpty: Boolean)

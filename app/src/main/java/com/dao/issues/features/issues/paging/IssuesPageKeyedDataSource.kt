@@ -1,5 +1,6 @@
 package com.dao.issues.features.issues.paging
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import com.dao.issues.data.IssuesRepositoryInteractor
@@ -8,6 +9,7 @@ import com.dao.issues.network.NetworkState
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
+import okhttp3.Headers
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -27,13 +29,8 @@ class IssuesPageKeyedDataSource @Inject constructor(
         val consumer: Consumer<Response<List<Issue>>> = Consumer { response ->
             if(response.isSuccessful)
             {
-                response.headers().get("Link")?.split(",")?.map { header ->
-                    header.substringAfter("page=", "&")[0]
-                }.
-                        .
-
-                response.headers().get("Link")?.substringAfter("pager=") .matches(Regex("page=(\\d+).*\$"))
-                callback.onResult(response.body()!!, 1, 2)
+                val limits = getPagination(response.headers())
+                callback.onResult(response.body() ?: emptyList(), 1, limits["next"])
             }
         }
 
@@ -42,9 +39,9 @@ class IssuesPageKeyedDataSource @Inject constructor(
         }
 
         val disposable = repository.loadIssues(1)
-                .subscribeOn(Schedulers.io())
                 .doOnSubscribe { networkState.postValue(NetworkState.LOADING) }
                 .doOnTerminate { networkState.postValue(NetworkState.LOADED) }
+                .subscribeOn(Schedulers.io())
                 .subscribe(consumer, error)
 
         composite.add(disposable)
@@ -55,7 +52,9 @@ class IssuesPageKeyedDataSource @Inject constructor(
         val consumer: Consumer<Response<List<Issue>>> = Consumer { response ->
             if(response.isSuccessful)
             {
-                callback.onResult(response.body()!!, 1)
+                val limits = getPagination(response.headers())
+                Log.e("TAG", limits.toString())
+                callback.onResult(response.body() ?: emptyList(), limits["next"])
             }
         }
 
@@ -64,9 +63,9 @@ class IssuesPageKeyedDataSource @Inject constructor(
         }
 
        val disposable = repository.loadIssues(params.requestedLoadSize)
-                .subscribeOn(Schedulers.io())
-                .doOnSubscribe { networkState.postValue(NetworkState.LOADING) }
-                .doOnTerminate { networkState.postValue(NetworkState.LOADED) }
+               .doOnSubscribe { networkState.postValue(NetworkState.LOADING) }
+               .doOnTerminate { networkState.postValue(NetworkState.LOADED) }
+               .subscribeOn(Schedulers.io())
                .subscribe(consumer, error)
 
         composite.add(disposable)
@@ -75,5 +74,19 @@ class IssuesPageKeyedDataSource @Inject constructor(
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, Issue>)
     {
         /* not implemented */
+    }
+
+    private fun getPagination(headers: Headers): Map<String, Int>
+    {
+        var limits = mapOf("prev" to 1, "next" to 1)
+
+        headers.get("Link")?.let { header ->
+           limits = header
+                    .split(",")
+                    .map { (it.substringAfter("rel=").removePrefix("\"").removeSuffix("\"") to
+                            it.substringAfter("?page=").substringBefore("&").toInt()) }.toMap()
+        }
+
+        return limits
     }
 }
