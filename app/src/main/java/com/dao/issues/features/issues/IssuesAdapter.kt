@@ -43,7 +43,6 @@ class IssuesAdapter(
         {
             listener.onIssueViewOnClick(binding.issue!!)
         }
-
     }
 
     companion object

@@ -4,12 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import com.dao.issues.data.IssuesRepositoryInteractor
 import com.dao.issues.features.issues.paging.IssuesDataSourceFactory
 import com.dao.issues.features.issues.paging.IssuesPageKeyedDataSource
 import com.dao.issues.model.Issue
 import com.dao.issues.network.NetworkState
-import com.dao.issues.util.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable
 
 /**
@@ -17,19 +15,13 @@ import io.reactivex.disposables.CompositeDisposable
  *
  * @author Diogo Oliveira.
  */
-class IssuesPresenter constructor(
-        private val repository: IssuesRepositoryInteractor,
-        private val schedulerProvider: SchedulerProvider) : IssuesInteractor.Presenter
+class IssuesPresenter constructor(private val factory: IssuesDataSourceFactory) : IssuesInteractor.Presenter
 {
     private lateinit var view: IssuesInteractor.View
     private val composite: CompositeDisposable = CompositeDisposable()
-
     private var issues: LiveData<PagedList<Issue>>
-    private val factory: IssuesDataSourceFactory
 
     init {
-        factory = IssuesDataSourceFactory(composite, repository)
-
         val config = PagedList.Config.Builder()
                 .setInitialLoadSizeHint(75)
                 .setPageSize(15)
@@ -48,19 +40,6 @@ class IssuesPresenter constructor(
     override fun terminate()
     {
         composite.clear()
-    }
-
-    override fun loadIssuesList()
-    {
-//        val disposable = repository.loadIssues()
-//                .compose(schedulerProvider.applySchedulers())
-//                .doOnSubscribe { view.showLoading() }
-//                .doOnTerminate { view.hideLoading() }
-//                .subscribe({ view.loadingIssuesList(it)},
-//                           { view.executeRequireNetwork { loadIssuesList() } })
-//
-//        composite.add(disposable)
-
     }
 
     override fun issuesObserver(): LiveData<PagedList<Issue>> = issues

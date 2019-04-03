@@ -44,7 +44,7 @@ class IssuesActivity : BaseActivity(), IssuesInteractor.View, OnCollectionChange
         helper = DataBindingUtil.setContentView(this, R.layout.activity_issues)
 
         presenter.initialize(this)
-        executeRequireNetwork { presenter.loadIssuesList() }
+        executeRequireNetwork {  }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean
@@ -111,11 +111,14 @@ class IssuesActivity : BaseActivity(), IssuesInteractor.View, OnCollectionChange
             {
                 State.RUNNING -> showLoading()
                 State.SUCCESS -> hideLoading()
-                State.FAILED -> toast(R.string.app_internal_no_connection, Toast.LENGTH_LONG)
+                State.FAILED -> {
+                    hideLoading()
+                    toast(R.string.app_internal_no_connection, Toast.LENGTH_LONG)
+                }
             }
         })
 
-        helper.swipeRefresh.setOnRefreshListener { executeRequireNetwork { presenter.loadIssuesList() } }
+        helper.swipeRefresh.setOnRefreshListener { executeRequireNetwork { /*presenter.loadIssuesList()*/ } }
     }
 
     override fun showLoading()

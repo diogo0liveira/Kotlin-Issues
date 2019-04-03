@@ -20,10 +20,7 @@ class AppModule
 {
     @Provides
     @Singleton
-    fun provideContext(application: KotlinApplication): Context
-    {
-        return application.applicationContext
-    }
+    fun provideContext(application: KotlinApplication): Context = application.applicationContext
 
     @Provides
     @Singleton

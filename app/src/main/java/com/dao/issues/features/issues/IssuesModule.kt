@@ -2,9 +2,10 @@ package com.dao.issues.features.issues
 
 import com.dao.issues.data.repository.IssuesRepository
 import com.dao.issues.di.annotations.ActivityScoped
-import com.dao.issues.util.SchedulerProvider
+import com.dao.issues.features.issues.paging.IssuesDataSourceFactory
 import dagger.Module
 import dagger.Provides
+import io.reactivex.disposables.CompositeDisposable
 
 /**
  * Created in 26/03/19 22:44.
@@ -16,8 +17,14 @@ class IssuesModule
 {
     @Provides
     @ActivityScoped
-    fun provideIssuesPresenter(repository: IssuesRepository, schedulerProvider: SchedulerProvider): IssuesInteractor.Presenter
-    {
-        return IssuesPresenter(repository, schedulerProvider)
-    }
+    fun provideCompositeDisposable() = CompositeDisposable()
+
+    @Provides
+    @ActivityScoped
+    fun provideIssuesPresenter(factory: IssuesDataSourceFactory) = IssuesPresenter(factory)
+
+    @Provides
+    @ActivityScoped
+    fun provideIssuesDataSourceFactory(composite: CompositeDisposable, repository: IssuesRepository) =
+            IssuesDataSourceFactory(composite, repository)
 }
