@@ -117,7 +117,7 @@ class IssuesActivity : BaseActivity(), IssuesInteractor.View, OnCollectionChange
             }
         })
 
-        helper.swipeRefresh.setOnRefreshListener { executeRequireNetwork { /*presenter.loadIssuesList()*/ } }
+        helper.swipeRefresh.setOnRefreshListener { executeRequireNetwork { presenter.refreshIssues() } }
     }
 
     override fun showLoading()

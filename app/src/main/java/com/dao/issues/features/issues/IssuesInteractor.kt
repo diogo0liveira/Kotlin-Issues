@@ -27,6 +27,8 @@ interface IssuesInteractor
 
     interface Presenter : IPresenter<View>
     {
+        fun refreshIssues()
+
         fun loadIssues(): LiveData<NetworkState>
 
         fun issuesObserver(): LiveData<PagedList<Issue>>

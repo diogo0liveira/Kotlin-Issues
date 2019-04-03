@@ -42,6 +42,11 @@ class IssuesPresenter constructor(private val factory: IssuesDataSourceFactory) 
         composite.clear()
     }
 
+    override fun refreshIssues()
+    {
+        issues.value?.dataSource?.invalidate()
+    }
+
     override fun issuesObserver(): LiveData<PagedList<Issue>> = issues
 
     override fun loadIssues(): LiveData<NetworkState> =

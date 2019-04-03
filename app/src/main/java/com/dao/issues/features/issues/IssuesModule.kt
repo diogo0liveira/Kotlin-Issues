@@ -27,7 +27,8 @@ class IssuesModule
 
     @Provides
     @ActivityScoped
-    fun provideIssuesDataSourceFactory(dataSource: IssuesPageKeyedDataSource) = IssuesDataSourceFactory(dataSource)
+    fun provideIssuesDataSourceFactory(composite: CompositeDisposable, schedulerProvider: SchedulerProvider, repository: IssuesRepository) =
+            IssuesDataSourceFactory(composite, schedulerProvider, repository)
 
     @Provides
     @ActivityScoped

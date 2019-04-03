@@ -50,7 +50,7 @@ class Recycler
             registerAdapterDataObserver(AdapterDataObserver())
         }
 
-        internal inner class AdapterDataObserver : RecyclerView.AdapterDataObserver()
+        private inner class AdapterDataObserver : RecyclerView.AdapterDataObserver()
         {
             override fun onChanged()
             {
