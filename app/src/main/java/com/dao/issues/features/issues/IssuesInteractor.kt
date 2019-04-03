@@ -29,8 +29,6 @@ interface IssuesInteractor
     {
         fun loadIssues(): LiveData<NetworkState>
 
-        fun getNetworkState(): LiveData<NetworkState>
-
         fun issuesObserver(): LiveData<PagedList<Issue>>
     }
 }

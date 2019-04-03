@@ -46,7 +46,4 @@ class IssuesPresenter constructor(private val factory: IssuesDataSourceFactory) 
 
     override fun loadIssues(): LiveData<NetworkState> =
             Transformations.switchMap<IssuesPageKeyedDataSource, NetworkState>(factory.source) { it.networkState }
-
-    override fun getNetworkState(): LiveData<NetworkState> =
-            Transformations.switchMap<IssuesPageKeyedDataSource, NetworkState>(factory.source) { it.networkState }
 }

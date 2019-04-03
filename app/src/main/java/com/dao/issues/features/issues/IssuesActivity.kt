@@ -105,14 +105,14 @@ class IssuesActivity : BaseActivity(), IssuesInteractor.View, OnCollectionChange
 
         presenter.issuesObserver().observe(this, Observer { adapter.submitList(it) })
 
-        presenter.getNetworkState().observe(this, Observer {
+        presenter.loadIssues().observe(this, Observer {
             when(it.status)
             {
                 State.RUNNING -> showLoading()
                 State.SUCCESS -> hideLoading()
                 State.FAILED -> {
                     hideLoading()
-                    toast(R.string.app_internal_no_connection, Toast.LENGTH_LONG)
+                    executeRequireNetwork { it.retry?.invoke()}
                 }
             }
         })

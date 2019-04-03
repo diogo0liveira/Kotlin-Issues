@@ -10,12 +10,12 @@ enum class State
     RUNNING, SUCCESS, FAILED
 }
 
-data class NetworkState constructor(val status: State, val message: String? = null)
+data class NetworkState constructor(val status: State, val message: String? = null, val retry: (() -> Unit)? = null)
 {
     companion object
     {
-        val LOADED = NetworkState(State.SUCCESS)
-        val LOADING = NetworkState(State.RUNNING)
-        fun error(message: String?) = NetworkState(State.FAILED, message)
+        val RUNNING = NetworkState(State.RUNNING)
+        val SUCCESS = NetworkState(State.SUCCESS)
+        fun error(message: String?, retry: (() -> Unit)? = null) = NetworkState(State.FAILED, message, retry)
     }
 }

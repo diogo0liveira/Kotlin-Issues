@@ -27,20 +27,17 @@ class IssuesPageKeyedDataSource @Inject constructor(
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, Issue>)
     {
         val consumer: Consumer<Response<List<Issue>>> = Consumer { response ->
-            if(response.isSuccessful)
-            {
-                val limits = getPagination(response.headers())
-                callback.onResult(response.body() ?: emptyList(), 1, limits["next"])
-            }
+            val limits = getPagination(response.headers())
+            callback.onResult(response.body() ?: emptyList(), 1, limits["next"])
+            networkState.postValue(NetworkState.SUCCESS)
         }
 
         val error: Consumer<Throwable> = Consumer {
-            networkState.postValue(NetworkState.error(it.message))
+            networkState.postValue(NetworkState.error(it.message) { loadInitial(params, callback) })
         }
 
         val disposable = repository.loadIssues(1)
-                .doOnSubscribe { networkState.postValue(NetworkState.LOADING) }
-                .doOnTerminate { networkState.postValue(NetworkState.LOADED) }
+                .doOnSubscribe { networkState.postValue(NetworkState.RUNNING) }
                 .compose(schedulerProvider.applySchedulers())
                 .subscribe(consumer, error)
 
@@ -50,20 +47,17 @@ class IssuesPageKeyedDataSource @Inject constructor(
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Issue>)
     {
         val consumer: Consumer<Response<List<Issue>>> = Consumer { response ->
-            if(response.isSuccessful)
-            {
-                val limits = getPagination(response.headers())
-                callback.onResult(response.body() ?: emptyList(), limits["next"])
-            }
+            val limits = getPagination(response.headers())
+            callback.onResult(response.body() ?: emptyList(), limits["next"])
+            networkState.postValue(NetworkState.SUCCESS)
         }
 
         val error: Consumer<Throwable> = Consumer {
-            networkState.postValue(NetworkState.error(it.message))
+            networkState.postValue(NetworkState.error(it.message) { loadAfter(params, callback) })
         }
 
        val disposable = repository.loadIssues(params.requestedLoadSize)
-               .doOnSubscribe { networkState.postValue(NetworkState.LOADING) }
-               .doOnTerminate { networkState.postValue(NetworkState.LOADED) }
+               .doOnSubscribe { networkState.postValue(NetworkState.RUNNING) }
                .compose(schedulerProvider.applySchedulers())
                .subscribe(consumer, error)
 
