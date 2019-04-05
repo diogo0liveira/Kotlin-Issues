@@ -1,19 +1,19 @@
 package com.dao.issues.features.issues
 
+import androidx.lifecycle.Lifecycle
+import androidx.test.core.app.launchActivity
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions
-import androidx.test.espresso.assertion.ViewAssertions
-import androidx.test.espresso.contrib.RecyclerViewActions
-import androidx.test.espresso.intent.rule.IntentsTestRule
-import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import com.dao.issues.R
+import com.dao.issues.rx2idlerktx.Rx2IdlerKtx
 import io.reactivex.plugins.RxJavaPlugins
-import io.reactivex.schedulers.Schedulers
-import org.junit.Before
 import org.junit.FixMethodOrder
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.MethodSorters
@@ -28,42 +28,21 @@ import org.junit.runners.MethodSorters
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 class IssuesActivityTest
 {
-    @get:Rule
-    val intentRule = IntentsTestRule(IssuesActivity::class.java, false)
-
     init
     {
-        RxJavaPlugins.setIoSchedulerHandler { Schedulers.trampoline() }
-    }
-
-    @Before
-    fun setUp()
-    {
-        intentRule.launchActivity(null)
+        RxJavaPlugins.setInitIoSchedulerHandler(Rx2IdlerKtx.create("RxJava2-IOScheduler"))
     }
 
     @Test
     fun onIssueViewOnClick()
     {
-        onView(ViewMatchers.withId(R.id.issues_list))
-                .perform(RecyclerViewActions.actionOnItemAtPosition<IssuesAdapter.ViewHolder>(0, ViewActions.click()))
+        val scenario = launchActivity<IssuesActivity>().apply { moveToState(Lifecycle.State.RESUMED) }
 
-        onView(ViewMatchers.withId(R.id.anchor)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-    }
+        onView(withId(R.id.issues_list))
+                .perform(actionOnItemAtPosition<IssuesAdapter.ViewHolder>(0, click()))
 
-    @Test
-    fun showLoading()
-    {
+        onView(withId(R.id.content_detail)).check(matches(isDisplayed()))
 
-    }
-
-    @Test
-    fun startIssuesDetailActivity()
-    {
-    }
-
-    @Test
-    fun executeRequireNetwork()
-    {
+        scenario.close()
     }
 }

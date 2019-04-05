@@ -36,15 +36,15 @@ ext {
 
     pagingVersion = '2.1.0'
     cardviewVersion = '1.0.0'
-    materialVersion = '1.1.0-alpha04'
+    materialVersion = '1.1.0-alpha05'
     appcompatVersion = '1.1.0-alpha03'
     recyclerviewVersion = '1.1.0-alpha03'
     constraintlayoutVersion = '2.0.0-alpha3'
     coordinatorlayoutVersion = '1.1.0-alpha01'
 
     /* External */
-    daggerVersion = '2.21'
-    daggerAndroidVersion = '2.21'
+    daggerVersion = '2.22.1'
+    daggerAndroidVersion = '2.22.1'
     glideVersion = '4.9.0'
     gsonVersion = '2.8.5'
     rxjavaVersion = '2.2.0'

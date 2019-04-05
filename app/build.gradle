@@ -19,7 +19,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
 
         vectorDrawables.useSupportLibrary = true
-        testInstrumentationRunner "com.dao.issues.TestAndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField 'String', 'GITHUB_API_KEY', keystoreProperties['GITHUB_API_KEY']
     }
 
@@ -38,6 +38,10 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
     }
 
     androidExtensions {
@@ -93,6 +97,8 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoCoreVersion"
     androidTestImplementation "androidx.test.espresso:espresso-intents:$espressoCoreVersion"
     androidTestImplementation "androidx.test.espresso:espresso-idling-resource:$espressoCoreVersion"
+
+    androidTestImplementation "androidx.test:core-ktx:1.1.0"
 
     testImplementation 'junit:junit:4.13-beta-2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1-alpha02'
