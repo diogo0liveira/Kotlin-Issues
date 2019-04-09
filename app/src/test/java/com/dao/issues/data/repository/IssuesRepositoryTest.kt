@@ -43,9 +43,9 @@ class IssuesRepositoryTest
     @Test
     fun `load issues`()
     {
-        given(remote.loadIssues()).willReturn(Observable.just(mock()))
-        repository.loadIssues().test()
-        verify(remote).loadIssues()
+        given(remote.loadIssues(1)).willReturn(Observable.just(mock()))
+        repository.loadIssues(1).test()
+        verify(remote).loadIssues(1)
     }
 
     @Test

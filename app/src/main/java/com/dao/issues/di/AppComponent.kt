@@ -21,5 +21,5 @@ import javax.inject.Singleton
 interface AppComponent : AndroidInjector<KotlinApplication>
 {
     @Component.Builder
-    abstract class Builder : AndroidInjector.Builder<KotlinApplication>()
+    abstract class Builder : AndroidInjector.Factory<KotlinApplication>
 }

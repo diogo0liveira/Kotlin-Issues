@@ -87,6 +87,7 @@ dependencies {
 
     testImplementation "junit:junit:$junitVersion"
     testImplementation "org.mockito:mockito-core:$mockitoCoreVersion"
+    testImplementation "androidx.arch.core:core-testing:$coreTesting"
 
     androidTestImplementation "androidx.test:rules:$testRulesVersion"
     androidTestImplementation "androidx.test:runner:$testRunnerVersion"
@@ -99,10 +100,7 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-idling-resource:$espressoCoreVersion"
 
     androidTestImplementation "androidx.test:core-ktx:1.1.0"
-
-    testImplementation 'junit:junit:4.13-beta-2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1-alpha02'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha02'
+    androidTestImplementation "com.squareup.okhttp3:mockwebserver:3.14.0"
 
     androidTestImplementation("com.jakewharton.espresso:okhttp3-idling-resource:1.0.0") {
         exclude group: 'androidx.test.espresso', module: 'espresso-idling-resource'
