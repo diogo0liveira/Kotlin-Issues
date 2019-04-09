@@ -21,8 +21,7 @@ open class KotlinApplication : Application(), HasActivityInjector
     override fun onCreate()
     {
         super.onCreate()
-        Boolean
-        DaggerAppComponent.builder().create(this).inject(this)
+        DaggerAppComponent.factory().create(this).inject(this)
     }
 
     override fun activityInjector(): AndroidInjector<Activity> = dispatchingActivityInjector
