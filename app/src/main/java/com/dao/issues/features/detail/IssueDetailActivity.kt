@@ -79,15 +79,11 @@ class IssueDetailActivity : BaseActivity(), IssueDetailInteractor.View, View.OnC
             setDisplayShowHomeEnabled(true)
         }
 
-        if(helper.contentDetail.contentCardComments.messageEmpty.isInflated)
-        {
-            helperEmpty.emptyVisibility = true
-        }
-        else
-        {
-            helper.contentDetail.contentCardComments.messageEmpty.viewStub!!.visibility = View.VISIBLE
-            helperEmpty = DataBindingUtil.findBinding(helper.contentDetail.contentCardComments.messageEmpty.root)!!
-            helperEmpty.emptyVisibility = true
+        helper.contentDetail.contentCardComments.messageEmpty.viewStub?.inflate()?.let { view ->
+            DataBindingUtil.getBinding<ViewEmptyCommentsBinding>(view)?.let { binding ->
+                helperEmpty = binding
+                helperEmpty.emptyVisibility = true
+            }
         }
 
         adapter.setOnCollectionChangedListener(this)
