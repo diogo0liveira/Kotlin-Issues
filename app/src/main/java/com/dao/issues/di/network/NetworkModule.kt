@@ -6,6 +6,7 @@ import com.dao.issues.GithubApi
 import com.dao.issues.network.Github
 import com.dao.issues.network.interceptor.GithubVersionInterceptor
 import com.dao.issues.network.interceptor.TokenRequestInterceptor
+import com.dao.issues.util.json.GsonHelper
 import dagger.Module
 import dagger.Provides
 import okhttp3.Cache
@@ -43,9 +44,6 @@ class NetworkModule
     fun provideHttpClient(interceptor: Interceptor, cache: Cache): OkHttpClient =
             OkHttpClient
                     .Builder()
-                    .connectTimeout(10L, TimeUnit.SECONDS)
-                    .writeTimeout(10L, TimeUnit.SECONDS)
-                    .readTimeout(10L, TimeUnit.SECONDS)
                     .addInterceptor(GithubVersionInterceptor())
                     .addInterceptor(TokenRequestInterceptor())
                     .addNetworkInterceptor(interceptor)
@@ -57,7 +55,7 @@ class NetworkModule
             Retrofit.Builder()
                 .client(httpClient)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create()).baseUrl(GithubApi.URL).build()
+                .addConverterFactory(GsonConverterFactory.create(GsonHelper.build())).baseUrl(GithubApi.URL).build()
 
 
     @Provides
