@@ -32,6 +32,7 @@ class Recycler
 
         abstract fun onBindViewHolder(holder: V, item: T?)
 
+        @Suppress("SameParameterValue")
         protected fun <H : ViewDataBinding> inflate(parent: ViewGroup, @LayoutRes layout: Int): H
         {
             return DataBindingUtil.inflate(LayoutInflater.from(context), layout, parent, false)
@@ -54,24 +55,6 @@ class Recycler
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int)
             {
                 super.onItemRangeInserted(positionStart, itemCount)
-                collectionChanged()
-            }
-
-            override fun onItemRangeChanged(positionStart: Int, itemCount: Int)
-            {
-                super.onItemRangeChanged(positionStart, itemCount)
-                collectionChanged()
-            }
-
-            override fun onItemRangeChanged(positionStart: Int, itemCount: Int, payload: Any?)
-            {
-                super.onItemRangeChanged(positionStart, itemCount, payload)
-                collectionChanged()
-            }
-
-            override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int)
-            {
-                super.onItemRangeMoved(fromPosition, toPosition, itemCount)
                 collectionChanged()
             }
 
