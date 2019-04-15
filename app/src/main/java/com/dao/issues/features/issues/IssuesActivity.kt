@@ -5,7 +5,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -83,15 +82,11 @@ class IssuesActivity : BaseActivity(), IssuesInteractor.View, OnCollectionChange
             setDisplayUseLogoEnabled(true)
         }
 
-        if(helper.messageEmpty.isInflated)
-        {
-            helperEmpty.visible = true
-        }
-        else
-        {
-            helper.messageEmpty.viewStub!!.visibility = View.VISIBLE
-            helperEmpty = DataBindingUtil.findBinding(helper.messageEmpty.root)!!
-            helperEmpty.visible = true
+        helper.messageEmpty.viewStub?.inflate()?.let { view ->
+            DataBindingUtil.getBinding<ViewEmptyIssuesBinding>(view)?.let { binding ->
+                helperEmpty = binding
+                helperEmpty.visible = true
+            }
         }
 
         with(helper.issuesList) {
@@ -112,12 +107,15 @@ class IssuesActivity : BaseActivity(), IssuesInteractor.View, OnCollectionChange
                 State.SUCCESS -> hideLoading()
                 State.FAILED -> {
                     hideLoading()
-                    executeRequireNetwork { it.retry?.invoke()}
+                    executeRequireNetwork { it.retry?.invoke() }
                 }
             }
         })
 
-        helper.swipeRefresh.setOnRefreshListener { executeRequireNetwork { presenter.refreshIssues() } }
+        helper.swipeRefresh.setOnRefreshListener { executeRequireNetwork {
+            presenter.refreshIssues()
+            helperEmpty.visible
+        } }
     }
 
     override fun showLoading()
@@ -144,7 +142,14 @@ class IssuesActivity : BaseActivity(), IssuesInteractor.View, OnCollectionChange
 
     override fun onCollectionChanged(isEmpty: Boolean)
     {
-        helperEmpty.visible = isEmpty
+        if(helper.issuesList.layoutManager?.childCount!! > 0)
+        {
+            helperEmpty.visible = false
+        }
+        else
+        {
+            helperEmpty.visible = isEmpty
+        }
     }
 
     override fun executeRequireNetwork(block: () -> Unit)
