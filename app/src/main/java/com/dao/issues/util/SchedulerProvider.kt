@@ -1,7 +1,5 @@
 package com.dao.issues.util
 
-import io.reactivex.Observable
-import io.reactivex.ObservableSource
 import io.reactivex.ObservableTransformer
 import io.reactivex.Scheduler
 
@@ -17,14 +15,8 @@ class SchedulerProvider(
 {
     fun <T> applySchedulers(): ObservableTransformer<T, T>
     {
-        return object : ObservableTransformer<T, T>
-        {
-            override fun apply(observable: Observable<T>): ObservableSource<T>
-            {
-               return observable
-                       .subscribeOn(backgroundScheduler)
-                       .observeOn(foregroundScheduler)
-            }
+        return ObservableTransformer { observable ->
+            observable.subscribeOn(backgroundScheduler).observeOn(foregroundScheduler)
         }
     }
 }
