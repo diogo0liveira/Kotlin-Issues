@@ -26,8 +26,8 @@ class IssuesRemoteRepository @Inject constructor(private val service: Github) : 
     {
         return service.issueComments(url)
                 .flatMap { Observable.fromIterable(it) }
-                .flatMap { service.user(it.user.profile).flatMap { user ->
-                        Observable.just(Comment(it.created, it.author, it.body, user)) }
+                .flatMap { comment -> service.user(comment.user.profile)
+                .flatMap { user -> Observable.just(Comment(comment.created, comment.author, comment.body, user)) }
                 }.toList().toObservable()
     }
 }
