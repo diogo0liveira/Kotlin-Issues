@@ -11,8 +11,6 @@ import com.dao.issues.model.Issue
 import com.dao.issues.model.State
 import com.dao.issues.util.CircularOutlineProvider
 import com.dao.issues.util.extensions.load
-import java.text.SimpleDateFormat
-import java.util.*
 
 /**
  * Created in 03/08/18 16:17.
@@ -25,33 +23,17 @@ fun visible(view: View, visible: Boolean)
     view.visibility = if(visible) View.VISIBLE else View.GONE
 }
 
-@BindingAdapter("created")
-fun created(view: TextView, date: String)
-{
-    val parse = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)
-    parse.timeZone = TimeZone.getDefault()
-
-    val dateFormatted = SimpleDateFormat("EEE, MMM d, yy", Locale.ENGLISH).format(parse.parse(date))
-    view.text = dateFormatted
-}
-
-@BindingAdapter("createdAt", "shortDescription", requireAll = false)
-fun createdAt(view: TextView, issue: Issue?, shortDescription: Boolean)
+@BindingAdapter("createdBy", "createdAt", "shortDescription", requireAll = false)
+fun created(view: TextView, issue: Issue?, date: String?, shortDescription: Boolean)
 {
     issue?.let {
-        val parse = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH)
-        parse.timeZone = TimeZone.getDefault()
-
-        val date = parse.parse(issue.created)
-        val dateFormatted = SimpleDateFormat("EEE, MMM d, yy", Locale.ENGLISH).format(date)
-
         if(shortDescription)
         {
-            view.text = view.context.getString(R.string.issue_created, dateFormatted, issue.user.login)
+            view.text = view.context.getString(R.string.issue_created, date, issue.user.login)
         }
         else
         {
-            view.text = view.context.getString(R.string.issue_created_at, issue.number, dateFormatted, issue.user.login)
+            view.text = view.context.getString(R.string.issue_created_at, issue.number, date, issue.user.login)
         }
     }
 }

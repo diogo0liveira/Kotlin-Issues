@@ -6,6 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="com.dao.issues.util.DateFormatter"/>
         <variable name="issue" type="com.dao.issues.model.Issue"/>
     </data>
 
@@ -51,7 +52,8 @@
                 android:ellipsize="end"
                 android:fontFamily="monospace"
                 android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                app:createdAt="@{issue}"
+                app:createdBy="@{issue}"
+                app:createdAt="@{DateFormatter.format(issue.created)}"
                 app:shortDescription="@{true}"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintTop_toTopOf="@+id/state"

@@ -8,13 +8,10 @@ import com.google.gson.GsonBuilder
  *
  * @author Diogo Oliveira.
  */
-class GsonHelper
+object GsonHelper
 {
-    companion object
+    fun build(): Gson
     {
-        fun build(): Gson
-        {
-            return GsonBuilder().create()
-        }
+        return GsonBuilder().create()
     }
 }
