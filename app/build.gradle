@@ -99,7 +99,7 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-intents:$espressoCoreVersion"
     androidTestImplementation "androidx.test.espresso:espresso-idling-resource:$espressoCoreVersion"
 
-    androidTestImplementation 'androidx.test:core-ktx:1.2.0-alpha03'
+    androidTestImplementation 'androidx.test:core-ktx:1.2.0-alpha04'
     androidTestImplementation 'com.squareup.okhttp3:mockwebserver:3.14.1'
 
     androidTestImplementation("com.jakewharton.espresso:okhttp3-idling-resource:1.0.0") {
