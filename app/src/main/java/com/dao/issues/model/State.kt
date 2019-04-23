@@ -1,7 +1,7 @@
 package com.dao.issues.model
 
 import android.os.Parcelable
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
 import kotlinx.android.parcel.Parcelize
 
 /**
@@ -12,7 +12,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 enum class State : Parcelable
 {
-    @SerializedName("all")
+    @Json(name = "all")
     ALL
     {
         override fun value(): String
@@ -20,7 +20,7 @@ enum class State : Parcelable
             return "all"
         }
     },
-    @SerializedName("open")
+    @Json(name = "open")
     OPEN
     {
         override fun value(): String
@@ -29,7 +29,7 @@ enum class State : Parcelable
         }
     },
 
-    @SerializedName("closed")
+    @Json(name = "closed")
     CLOSED
     {
         override fun value(): String

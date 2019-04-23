@@ -45,7 +45,7 @@ ext {
     daggerVersion = '2.22.1'
     daggerAndroidVersion = '2.22.1'
     glideVersion = '4.9.0'
-    gsonVersion = '2.8.5'
+    moshiVersion = '1.8.0'
     rxjavaVersion = '2.2.6'
     rxandroidVersion = '2.1.1'
     retrofitVersion = '2.5.0'

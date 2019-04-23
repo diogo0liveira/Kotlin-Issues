@@ -1,8 +1,10 @@
 package com.dao.issues.model
 
 import android.os.Parcelable
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.Parcelize
+import java.util.*
 
 /**
  * Created in 26/03/19 21:48.
@@ -10,24 +12,25 @@ import kotlinx.android.parcel.Parcelize
  * @author Diogo Oliveira.
  */
 @Parcelize
+@JsonClass(generateAdapter = true)
 data class Issue(
-        @SerializedName("html_url")
+        @Json(name = "html_url")
         val url: String,
-        @SerializedName("title")
+        @Json(name = "title")
         val title: String,
-        @SerializedName("number")
+        @Json(name = "number")
         val number: Int,
-        @SerializedName("created_at")
-        val created: String,
-        @SerializedName("body")
+        @Json(name = "created_at")
+        val created: Date,
+        @Json(name = "body")
         val body: String,
-        @SerializedName("state")
+        @Json(name = "state")
         val state: State,
-        @SerializedName("comments")
+        @Json(name = "comments")
         val commentsCount: Int,
-        @SerializedName("comments_url")
+        @Json(name = "comments_url")
         val commentsUrl: String,
-        @SerializedName("user")
+        @Json(name = "user")
         val user: User) : Parcelable
 {
     override fun toString(): String

@@ -1,8 +1,10 @@
 package com.dao.issues.model
 
 import android.os.Parcelable
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.Parcelize
+import java.util.*
 
 /**
  * Created in 27/03/19 22:42.
@@ -10,14 +12,15 @@ import kotlinx.android.parcel.Parcelize
  * @author Diogo Oliveira.
  */
 @Parcelize
+@JsonClass(generateAdapter = true)
 data class Comment(
-        @SerializedName("created_at")
-        val created: String,
-        @SerializedName("author_association")
+        @Json(name = "created_at")
+        val created: Date,
+        @Json(name = "author_association")
         val author: String,
-        @SerializedName("body")
+        @Json(name = "body")
         val body: String,
-        @SerializedName("user")
+        @Json(name = "user")
         val user: User) : Parcelable
 {
     override fun toString(): String
