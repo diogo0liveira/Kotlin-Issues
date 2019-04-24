@@ -1,7 +1,7 @@
 package com.dao.issues.features.issues
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.Transformations.switchMap
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.dao.issues.features.issues.paging.IssuesDataSourceFactory
@@ -48,5 +48,5 @@ class IssuesPresenter (private val factory: IssuesDataSourceFactory) : IssuesInt
     override fun issuesObserver(): LiveData<PagedList<Issue>> = issues
 
     override fun loadIssues(): LiveData<NetworkState> =
-            Transformations.switchMap<IssuesPageKeyedDataSource, NetworkState>(factory.source) { it.networkState }
+            switchMap<IssuesPageKeyedDataSource, NetworkState>(factory.source) { it.networkState }
 }
