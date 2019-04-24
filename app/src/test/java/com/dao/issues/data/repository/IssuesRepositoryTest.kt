@@ -1,7 +1,7 @@
 package com.dao.issues.data.repository
 
 import com.dao.issues.data.IssuesRepositoryInteractor
-import com.dao.issues.data.remote.IssuesRemoteRepository
+import com.dao.issues.data.remote.IssuesRemoteDataSource
 import com.dao.issues.util.any
 import com.dao.issues.util.mock
 import io.reactivex.Observable
@@ -23,7 +23,7 @@ import org.mockito.junit.MockitoJUnitRunner
 class IssuesRepositoryTest
 {
     @Mock
-    private lateinit var remote: IssuesRemoteRepository
+    private lateinit var remote: IssuesRemoteDataSource
     private lateinit var repository: IssuesRepositoryInteractor
 
     @Before

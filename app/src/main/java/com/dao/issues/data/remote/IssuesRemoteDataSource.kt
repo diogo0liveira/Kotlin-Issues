@@ -16,7 +16,7 @@ import javax.inject.Singleton
  * @author Diogo Oliveira.
  */
 @Singleton
-class IssuesRemoteRepository @Inject constructor(private val service: Github) : IssuesRepositoryInteractor
+class IssuesRemoteDataSource @Inject constructor(private val service: Github) : IssuesRepositoryInteractor
 {
     override fun loadUser(url: String): Observable<User> = service.user(url)
 
