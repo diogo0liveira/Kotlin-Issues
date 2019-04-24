@@ -15,7 +15,7 @@ import io.reactivex.disposables.CompositeDisposable
  *
  * @author Diogo Oliveira.
  */
-class IssuesPresenter constructor(private val factory: IssuesDataSourceFactory) : IssuesInteractor.Presenter
+class IssuesPresenter (private val factory: IssuesDataSourceFactory) : IssuesInteractor.Presenter
 {
     private lateinit var view: IssuesInteractor.View
     private val composite: CompositeDisposable = CompositeDisposable()

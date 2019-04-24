@@ -10,7 +10,7 @@ import io.reactivex.disposables.CompositeDisposable
  *
  * @author Diogo Oliveira.
  */
-class IssueDetailPresenter constructor(
+class IssueDetailPresenter (
         private val repository: IssuesRepositoryInteractor,
         private val schedulerProvider: SchedulerProvider) : IssueDetailInteractor.Presenter
 {
