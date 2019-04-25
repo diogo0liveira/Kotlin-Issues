@@ -56,7 +56,7 @@ class IssuesPageKeyedDataSource @Inject constructor(
             networkState.postValue(NetworkState.error(it.message) { loadAfter(params, callback) })
         }
 
-       val disposable = repository.loadIssues(params.requestedLoadSize)
+       val disposable = repository.loadIssues(params.key)
                .doOnSubscribe { networkState.postValue(NetworkState.RUNNING) }
                .compose(schedulerProvider.applySchedulers())
                .subscribe(consumer, error)
@@ -69,9 +69,9 @@ class IssuesPageKeyedDataSource @Inject constructor(
         /* not implemented */
     }
 
-    private fun pagination(headers: Headers): Map<String, Int>
+    private fun pagination(headers: Headers): Map<String, Int?>
     {
-        var limits = mapOf("prev" to 1, "next" to 1)
+        var limits = mapOf("prev" to 1, "next" to null)
 
         headers.get("Link")?.let { header ->
            limits = header
