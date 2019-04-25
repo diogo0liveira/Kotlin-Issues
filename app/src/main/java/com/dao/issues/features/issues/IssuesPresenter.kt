@@ -21,12 +21,12 @@ class IssuesPresenter (private val factory: IssuesDataSourceFactory) : IssuesInt
     private val composite: CompositeDisposable = CompositeDisposable()
     private var issues: LiveData<PagedList<Issue>>
 
-    init {
+    init
+    {
         val config = PagedList.Config.Builder()
                 .setPageSize(30).build()
 
         issues = LivePagedListBuilder<Int, Issue>(factory, config).build()
-
     }
 
     override fun initialize(view: IssuesInteractor.View)
