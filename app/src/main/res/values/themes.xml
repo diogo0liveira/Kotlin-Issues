@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-    <!-- Base -->
     <style name="Base.AppTheme" parent="Theme.MaterialComponents.Light">
         <item name="colorPrimaryDark">@color/primary_application_dark</item>
         <item name="colorPrimary">@color/primary_application</item>
@@ -9,10 +8,8 @@
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
-    <!-- Application -->
     <style name="AppTheme" parent="Base.AppTheme"/>
 
-    <!-- Not Actionbar -->
     <style name="AppTheme.NoActionBar" parent="Base.AppTheme">
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
