@@ -2,6 +2,8 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Kotlin Issues</string>
+
+    <string name="app_internal_server_unavailable">Serviço indisponível</string>
     <string name="app_internal_no_connection">Sem conexão com a internet</string>
 
     <string name="empty_list_comments">Não há comentários para essa issue.</string>

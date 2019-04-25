@@ -2,6 +2,7 @@ package com.dao.issues.features.issues.paging
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
+import com.dao.issues.R
 import com.dao.issues.data.IssuesRepositoryInteractor
 import com.dao.issues.model.Issue
 import com.dao.issues.network.NetworkState
@@ -27,9 +28,20 @@ class IssuesPageKeyedDataSource @Inject constructor(
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, Issue>)
     {
         val consumer: Consumer<Response<List<Issue>>> = Consumer { response ->
-            val limits = pagination(response.headers())
-            callback.onResult(response.body() ?: emptyList(), 1, limits["next"])
-            networkState.postValue(NetworkState.SUCCESS)
+            if(response.isSuccessful)
+            {
+                response.body()?.let { search ->
+                    val limits = pagination(response.headers())
+                    callback.onResult(search, 1, limits["next"])
+                }
+
+                networkState.postValue(NetworkState.SUCCESS)
+            }
+            else
+            {
+                networkState.postValue(NetworkState.error(
+                        R.string.app_internal_server_unavailable) { loadInitial(params, callback) })
+            }
         }
 
         val error: Consumer<Throwable> = Consumer {
@@ -47,9 +59,20 @@ class IssuesPageKeyedDataSource @Inject constructor(
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Issue>)
     {
         val consumer: Consumer<Response<List<Issue>>> = Consumer { response ->
-            val limits = pagination(response.headers())
-            callback.onResult(response.body() ?: emptyList(), limits["next"])
-            networkState.postValue(NetworkState.SUCCESS)
+            if(response.isSuccessful)
+            {
+                response.body()?.let { search ->
+                    val limits = pagination(response.headers())
+                    callback.onResult(search, limits["next"])
+                }
+
+                networkState.postValue(NetworkState.SUCCESS)
+            }
+            else
+            {
+                networkState.postValue(NetworkState.error(
+                        R.string.app_internal_server_unavailable) { loadAfter(params, callback) })
+            }
         }
 
         val error: Consumer<Throwable> = Consumer {
