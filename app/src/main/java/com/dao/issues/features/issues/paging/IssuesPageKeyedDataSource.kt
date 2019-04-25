@@ -27,7 +27,7 @@ class IssuesPageKeyedDataSource @Inject constructor(
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, Issue>)
     {
         val consumer: Consumer<Response<List<Issue>>> = Consumer { response ->
-            val limits = getPagination(response.headers())
+            val limits = pagination(response.headers())
             callback.onResult(response.body() ?: emptyList(), 1, limits["next"])
             networkState.postValue(NetworkState.SUCCESS)
         }
@@ -47,7 +47,7 @@ class IssuesPageKeyedDataSource @Inject constructor(
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Issue>)
     {
         val consumer: Consumer<Response<List<Issue>>> = Consumer { response ->
-            val limits = getPagination(response.headers())
+            val limits = pagination(response.headers())
             callback.onResult(response.body() ?: emptyList(), limits["next"])
             networkState.postValue(NetworkState.SUCCESS)
         }
@@ -69,7 +69,7 @@ class IssuesPageKeyedDataSource @Inject constructor(
         /* not implemented */
     }
 
-    private fun getPagination(headers: Headers): Map<String, Int>
+    private fun pagination(headers: Headers): Map<String, Int>
     {
         var limits = mapOf("prev" to 1, "next" to 1)
 
