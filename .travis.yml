@@ -17,4 +17,4 @@ cache:
     - $HOME/.gradle/wrapper/
     - $HOME/.android/build-cache
 notifications:
-  email: false
+  email: false 
