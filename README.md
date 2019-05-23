@@ -8,7 +8,7 @@ Teste com a API GitHub.
 
 ||||
 |:-:|:-:|:-:|
-|![First](/docs/print_main.png?raw=true)|![Sec](/docs/print_issues.png?raw=true)|![Third](/docs/print_detail2.png?raw=true)|
+|![First](/docs/print_main.png?raw=true)|![Sec](/docs/print_issues.png?raw=true)|![Third](/docs/print_detail.png?raw=true)|
 
 - Kotlin,
 - MVP,
