@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.dao.issues.di
 
 import com.dao.issues.di.annotations.ActivityScoped

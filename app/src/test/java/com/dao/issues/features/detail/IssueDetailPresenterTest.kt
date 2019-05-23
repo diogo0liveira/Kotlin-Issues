@@ -13,6 +13,7 @@ import org.junit.Test
 import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
+import java.util.*
 
 /**
  * Created in 29/03/19 16:08.
@@ -33,7 +34,7 @@ class IssueDetailPresenterTest
         User(0, "", "", "", "", "", "", "", "", 0, 0)
 
     private val issue =
-        Issue("", "", 0, "", "", State.ALL, 0, "", user)
+        Issue("", "", 0, Date(), "", State.ALL, 0, "", user)
 
     @Before
     fun setUp()

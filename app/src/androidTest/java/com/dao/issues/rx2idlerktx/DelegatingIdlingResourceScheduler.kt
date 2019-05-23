@@ -9,23 +9,23 @@ import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
 
 
-class DelegatingIdlingResourceScheduler(
-    private val delegate: Scheduler,
-    private val name: String
-) : IdlingResourceScheduler() {
-
+class DelegatingIdlingResourceScheduler(private val delegate: Scheduler, private val name: String) : IdlingResourceScheduler()
+{
     private val work = AtomicInteger()
     private var callback: IdlingResource.ResourceCallback? = null
 
     private val workDelegate = object : WorkDelegate
     {
 
-        override fun startWork() {
+        override fun startWork()
+        {
             work.incrementAndGet()
         }
 
-        override fun stopWork() {
-            if (work.decrementAndGet() == 0) {
+        override fun stopWork()
+        {
+            if(work.decrementAndGet() == 0)
+            {
                 callback?.onTransitionToIdle()
             }
         }
@@ -36,19 +36,24 @@ class DelegatingIdlingResourceScheduler(
 
     override fun isIdleNow() = work.get() == 0
 
-    override fun registerIdleTransitionCallback(target: IdlingResource.ResourceCallback) {
+    override fun registerIdleTransitionCallback(target: IdlingResource.ResourceCallback)
+    {
         callback = target
     }
 
-    override fun createWorker(): Scheduler.Worker {
+    override fun createWorker(): Worker
+    {
         val delegateWorker = delegate.createWorker()
 
-        return object : Scheduler.Worker() {
+        return object : Scheduler.Worker()
+        {
 
             private val disposables = CompositeDisposable(delegateWorker)
 
-            override fun schedule(action: Runnable): Disposable {
-                if (disposables.isDisposed) {
+            override fun schedule(action: Runnable): Disposable
+            {
+                if(disposables.isDisposed)
+                {
                     return Disposables.disposed()
                 }
                 val work = createWork(action, 0L)
@@ -58,8 +63,10 @@ class DelegatingIdlingResourceScheduler(
                 return workDisposable
             }
 
-            override fun schedule(action: Runnable, delayTime: Long, unit: TimeUnit): Disposable {
-                if (disposables.isDisposed) {
+            override fun schedule(action: Runnable, delayTime: Long, unit: TimeUnit): Disposable
+            {
+                if(disposables.isDisposed)
+                {
                     return Disposables.disposed()
                 }
                 val work = createWork(action, delayTime)
@@ -70,11 +77,10 @@ class DelegatingIdlingResourceScheduler(
                 return workDisposable
             }
 
-            override fun schedulePeriodically(
-                action: Runnable, initialDelay: Long, period: Long,
-                unit: TimeUnit
-            ): Disposable {
-                if (disposables.isDisposed) {
+            override fun schedulePeriodically(action: Runnable, initialDelay: Long, period: Long, unit: TimeUnit): Disposable
+            {
+                if(disposables.isDisposed)
+                {
                     return Disposables.disposed()
                 }
                 val work = createWork(action, initialDelay)
@@ -85,11 +91,13 @@ class DelegatingIdlingResourceScheduler(
                 return workDisposable
             }
 
-            override fun dispose() {
+            override fun dispose()
+            {
                 disposables.dispose()
             }
 
-            override fun isDisposed(): Boolean {
+            override fun isDisposed(): Boolean
+            {
                 return disposables.isDisposed
             }
         }
@@ -98,15 +106,17 @@ class DelegatingIdlingResourceScheduler(
     fun createWork(incoming: Runnable, delay: Long): ScheduledWork
     {
         var action = incoming
-        if (action is ScheduledWork) {
+        if(action is ScheduledWork)
+        {
             // Unwrap any re-scheduled work. We want each scheduler to get its own state machine.
             action = action.target
         }
         val immediate = delay == 0L
-        if (immediate) {
+        if(immediate)
+        {
             workDelegate.startWork()
         }
-        val startingState = if (immediate) ScheduledWork.STATE_SCHEDULED else ScheduledWork.STATE_IDLE
+        val startingState = if(immediate) ScheduledWork.STATE_SCHEDULED else ScheduledWork.STATE_IDLE
         return ScheduledWork(action, workDelegate, startingState)
     }
 

@@ -5,14 +5,16 @@
 Teste com a API GitHub.
 
 ## Screenshots
-|![First](/docs/print_main.png?raw=true)|![Sec](/docs/print_issues.png?raw=true)|![Third](/docs/print_detail1.png?raw=true)|![Fourth](/docs/print_detail2.png?raw=true)|
+
+||||
+|:-:|:-:|:-:|
+|![First](/docs/print_main.png?raw=true)|![Sec](/docs/print_issues.png?raw=true)|![Third](/docs/print_detail2.png?raw=true)|
 
 - Kotlin,
 - MVP,
 - Data Binding,
-- RxJava2, RxAndroid2 
-- Retrofit, OkHttp, OkHttp logging 
+- RxJava2, RxAndroid2
+- Retrofit, OkHttp, OkHttp logging
 - Moshi
 - Glide
-- Dagger 2 
-
+- Dagger 2
