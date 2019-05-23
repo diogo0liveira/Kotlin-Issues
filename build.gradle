@@ -57,7 +57,7 @@ ext {
     testRunnerVersion = '1.2.0-beta01'
 
     runnerVersion = '1.1.1'
-    coreTesting = '2.1.0-beta01'
+    coreTesting = '2.0.0'
     extJunitVersion = '1.1.1-beta01'
 
     mockitoCoreVersion = '2.21.0'

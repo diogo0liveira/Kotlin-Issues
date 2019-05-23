@@ -1,19 +1,20 @@
 package com.dao.issues.features.detail
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.dao.issues.data.IssueFactory
 import com.dao.issues.data.IssuesRepositoryInteractor
+import com.dao.issues.data.UserFactory
 import com.dao.issues.model.Comment
-import com.dao.issues.model.Issue
-import com.dao.issues.model.State
 import com.dao.issues.model.User
 import com.dao.issues.util.SchedulerProvider
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
-import java.util.*
 
 /**
  * Created in 29/03/19 16:08.
@@ -22,6 +23,9 @@ import java.util.*
  */
 class IssueDetailPresenterTest
 {
+    @get:Rule
+    var instantExecutorRule = InstantTaskExecutorRule()
+
     @Mock
     private lateinit var view: IssueDetailInteractor.View
     @Mock
@@ -30,11 +34,8 @@ class IssueDetailPresenterTest
     private val schedulerProvider = SchedulerProvider(Schedulers.trampoline(), Schedulers.trampoline())
     private lateinit var presenter: IssueDetailPresenter
 
-    private val user=
-        User(0, "", "", "", "", "", "", "", "", 0, 0)
-
-    private val issue =
-        Issue("", "", 0, Date(), "", State.ALL, 0, "", user)
+    private val user= UserFactory.build(0)
+    private val issue = IssueFactory.build("")
 
     @Before
     fun setUp()
@@ -68,7 +69,8 @@ class IssueDetailPresenterTest
     @Test
     fun `load user profile`()
     {
-        `when`(repository.loadUser(anyString())).thenReturn(Observable.just<User>(user))
+        `when`(repository.loadUser(anyString()))
+                .thenReturn(Observable.just<User>(user))
 
         presenter.loadIssue(issue)
         presenter.loadUserProfile()
@@ -79,7 +81,8 @@ class IssueDetailPresenterTest
     fun `load comments`()
     {
         val comments = listOf<Comment>()
-        `when`(repository.loadIssueComments(anyString())).thenReturn(Observable.just<List<Comment>>(comments))
+        `when`(repository.loadIssueComments(anyString()))
+                .thenReturn(Observable.just<List<Comment>>(comments))
 
         presenter.loadIssue(issue)
         presenter.loadComments()

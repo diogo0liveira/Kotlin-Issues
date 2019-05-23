@@ -31,7 +31,36 @@ android {
         }
 
         debug {
+            testCoverageEnabled true
             applicationIdSuffix ".debug"
+        }
+    }
+
+    android {
+        sourceSets {
+            String sharedTestDir = 'src/sharedTest/java'
+
+            androidTest {
+                java.srcDir sharedTestDir
+            }
+
+            test {
+                java.srcDir sharedTestDir
+            }
+        }
+    }
+
+    testOptions {
+        animationsDisabled = true
+
+        unitTests {
+            unitTests.returnDefaultValues = true
+
+            all {
+                testLogging {
+                    events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
+                }
+            }
         }
     }
 
@@ -94,6 +123,7 @@ dependencies {
 
     androidTestImplementation "androidx.test:rules:$testRulesVersion"
     androidTestImplementation "androidx.test:runner:$testRunnerVersion"
+    androidTestImplementation "androidx.arch.core:core-testing:$coreTesting"
 
     androidTestImplementation "androidx.test.ext:junit:$extJunitVersion"
     androidTestImplementation "org.mockito:mockito-android:$mockitoAndroidVersion"
