@@ -10,7 +10,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.0-beta02'
+        classpath 'com.android.tools.build:gradle:3.6.0-alpha01'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -53,11 +53,15 @@ ext {
     okhttp3LoggingVersion = '3.14.2'
 
     /* Test */
+    coreTesting = '2.0.0'
+    runnerVersion = '1.1.1'
+    testCoreVersion = '1.2.0-beta01'
+
     testRulesVersion = '1.2.0-beta01'
     testRunnerVersion = '1.2.0-beta01'
 
-    runnerVersion = '1.1.1'
-    coreTesting = '2.0.0'
+    extTruthVersion = '1.1.0'
+    junitVersion = '4.13-beta-2'
     extJunitVersion = '1.1.1-beta01'
 
     mockitoCoreVersion = '2.21.0'

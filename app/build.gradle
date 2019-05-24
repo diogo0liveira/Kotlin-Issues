@@ -114,19 +114,26 @@ dependencies {
     implementation "com.google.dagger:dagger:$daggerVersion"
     kapt "com.google.dagger:dagger-compiler:$daggerVersion"
 
-    kaptAndroidTest "com.google.dagger:dagger-compiler:$daggerVersion"
     implementation "com.google.dagger:dagger-android-support:$daggerAndroidVersion"
     kapt "com.google.dagger:dagger-android-processor:$daggerAndroidVersion"
+
+    kaptAndroidTest "com.google.dagger:dagger-compiler:$daggerVersion"
+    kaptAndroidTest "com.google.dagger:dagger-android-processor:$daggerAndroidVersion"
 
     testImplementation "org.mockito:mockito-core:$mockitoCoreVersion"
     testImplementation "androidx.arch.core:core-testing:$coreTesting"
 
     androidTestImplementation "androidx.test:rules:$testRulesVersion"
     androidTestImplementation "androidx.test:runner:$testRunnerVersion"
-    androidTestImplementation "androidx.arch.core:core-testing:$coreTesting"
 
+    androidTestImplementation "androidx.test:core:$testCoreVersion"
+    androidTestImplementation "androidx.test:core-ktx:$testCoreVersion"
     androidTestImplementation "androidx.test.ext:junit:$extJunitVersion"
+    androidTestImplementation "androidx.test.ext:junit-ktx:$extJunitVersion"
+    androidTestImplementation "androidx.test.ext:truth:$extTruthVersion"
+    androidTestImplementation "androidx.arch.core:core-testing:$coreTesting"
     androidTestImplementation "org.mockito:mockito-android:$mockitoAndroidVersion"
+
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoCoreVersion"
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoCoreVersion"
     androidTestImplementation "androidx.test.espresso:espresso-intents:$espressoCoreVersion"

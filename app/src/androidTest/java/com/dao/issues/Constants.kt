@@ -7,5 +7,5 @@ package com.dao.issues
  */
 object TestGithubApi
 {
-    const val URL = "http://localhost:8080/"
+    const val URL = "http://localhost:8080"
 }

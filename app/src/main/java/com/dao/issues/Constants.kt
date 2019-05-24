@@ -29,7 +29,7 @@ object GithubApi
 {
     const val VERSION = "application/vnd.github.v3+json"
     const val KEY = BuildConfig.GITHUB_API_KEY
-    const val URL = "https://api.github.com"
+    var URL = "https://api.github.com"
 
-    const val ISSUES = ("$URL/repos/JetBrains/kotlin/issues")
+    const val ISSUES = ("/repos/JetBrains/kotlin/issues")
 }

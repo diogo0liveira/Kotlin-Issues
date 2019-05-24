@@ -1,11 +1,14 @@
 package com.dao.issues.di.network
 
-import com.dao.issues.TestGithubApi
+import com.dao.issues.GithubApi
 import com.dao.issues.network.Github
+import com.dao.issues.network.interceptor.GithubVersionInterceptor
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -21,8 +24,17 @@ class TestNetworkModule
 {
     @Provides
     @Singleton
-    fun provideHttpClient(): OkHttpClient =
-            OkHttpClient.Builder().build()
+    fun provideInterceptor(): Interceptor =
+            HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }
+
+    @Provides
+    @Singleton
+    fun provideHttpClient(interceptor: Interceptor): OkHttpClient =
+            OkHttpClient
+                    .Builder()
+                    .addInterceptor(GithubVersionInterceptor())
+                    .addNetworkInterceptor(interceptor)
+                    .build()
 
     @Provides
     @Singleton
@@ -31,7 +43,7 @@ class TestNetworkModule
                     .client(httpClient)
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .addConverterFactory(MoshiConverterFactory.create(moshi))
-                    .baseUrl(TestGithubApi.URL).build()
+                    .baseUrl(GithubApi.URL).build()
 
     @Provides
     @Singleton

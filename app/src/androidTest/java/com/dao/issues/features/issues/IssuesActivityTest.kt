@@ -12,19 +12,17 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry
+import com.dao.issues.GithubApi
 import com.dao.issues.KotlinApplication
 import com.dao.issues.R
 import com.dao.issues.di.DaggerTestAppComponent
+import com.dao.issues.util.ResponseBodyParser
 import dagger.android.AndroidInjector
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
-import org.junit.After
-import org.junit.FixMethodOrder
-import org.junit.Rule
-import org.junit.Test
+import org.junit.*
 import org.junit.runner.RunWith
 import org.junit.runners.MethodSorters
-
 
 /**
  * Created in 29/03/19 11:32.
@@ -39,11 +37,12 @@ class IssuesActivityTest
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
 
-    private val webServer: MockWebServer = MockWebServer()
+    private val context = InstrumentationRegistry.getInstrumentation().targetContext
+    private val server: MockWebServer = MockWebServer()
 
     init
     {
-        webServer.start(8080)
+        GithubApi.URL = "http://localhost:8080"
 
         val app = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext as KotlinApplication
         val builder: AndroidInjector.Factory<KotlinApplication> = DaggerTestAppComponent.factory()
@@ -51,20 +50,29 @@ class IssuesActivityTest
         app.injector.inject(app)
     }
 
+    @Before
+    fun setUp()
+    {
+        server.start(8080)
+    }
+
     @After
     @Throws(Exception::class)
     fun tearDown()
     {
-        webServer.shutdown()
+        server.shutdown()
     }
 
     @Test
     fun onIssueViewOnClick()
     {
-        val mockResponse = MockResponse()
-                .setBody("{}")
-                .setResponseCode(200)
-        webServer.enqueue(mockResponse)
+        var body = ResponseBodyParser.from(context, R.raw.response_200_issues)
+        var mockResponse = MockResponse().setBody(body).setResponseCode(200)
+        server.enqueue(mockResponse)
+
+        body = ResponseBodyParser.from(context, R.raw.response_200_comments_empty)
+        mockResponse = MockResponse().setBody(body).setResponseCode(200)
+        server.enqueue(mockResponse)
 
         val scenario = launchActivity<IssuesActivity>().apply { moveToState(Lifecycle.State.RESUMED) }
 
@@ -72,6 +80,20 @@ class IssuesActivityTest
                 .perform(actionOnItemAtPosition<IssuesAdapter.ViewHolder>(0, click()))
 
         onView(withId(R.id.content_detail)).check(matches(isDisplayed()))
+
+        scenario.close()
+    }
+
+    @Test
+    fun onListEmpty()
+    {
+        val body = ResponseBodyParser.from(context, R.raw.response_200_issues_empty)
+        val mockResponse = MockResponse().setBody(body).setResponseCode(200)
+        server.enqueue(mockResponse)
+
+        val scenario = launchActivity<IssuesActivity>().apply { moveToState(Lifecycle.State.RESUMED) }
+
+        onView(withId(R.id.message_empty)).check(matches(isDisplayed()))
 
         scenario.close()
     }
