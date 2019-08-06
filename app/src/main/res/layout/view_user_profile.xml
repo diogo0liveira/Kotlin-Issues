@@ -110,13 +110,13 @@
             android:text="@{String.valueOf(user.followers)}"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintEnd_toEndOf="@+id/textView8"
-            app:layout_constraintStart_toStartOf="@+id/textView8"
+            app:layout_constraintEnd_toEndOf="@+id/followers_label"
+            app:layout_constraintStart_toStartOf="@+id/followers_label"
             app:layout_constraintTop_toBottomOf="@+id/blog"
             tools:text="10"/>
 
         <TextView
-            android:id="@+id/textView8"
+            android:id="@+id/followers_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -128,7 +128,7 @@
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/textView9"
+            app:layout_constraintEnd_toStartOf="@+id/following_label"
             app:layout_constraintTop_toBottomOf="@+id/followers"/>
 
         <TextView
@@ -138,13 +138,13 @@
             android:text="@{String.valueOf(user.following)}"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             app:layout_constraintTop_toTopOf="@+id/followers"
-            app:layout_constraintBottom_toTopOf="@+id/textView9"
-            app:layout_constraintEnd_toEndOf="@+id/textView9"
-            app:layout_constraintStart_toStartOf="@+id/textView9"
+            app:layout_constraintBottom_toTopOf="@+id/following_label"
+            app:layout_constraintEnd_toEndOf="@+id/following_label"
+            app:layout_constraintStart_toStartOf="@+id/following_label"
             tools:text="10"/>
 
         <TextView
-            android:id="@+id/textView9"
+            android:id="@+id/following_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -153,8 +153,8 @@
             android:fontFamily="sans-serif-smallcaps"
             android:text="@string/user_following"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textView8"
-            app:layout_constraintStart_toEndOf="@+id/textView8"
-            app:layout_constraintBottom_toBottomOf="@+id/textView8"/>
+            app:layout_constraintTop_toTopOf="@+id/followers_label"
+            app:layout_constraintStart_toEndOf="@+id/followers_label"
+            app:layout_constraintBottom_toBottomOf="@+id/followers_label"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

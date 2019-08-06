@@ -71,6 +71,7 @@ class IssuesActivity : BaseActivity(), IssuesInteractor.View, OnCollectionChange
     override fun onDestroy()
     {
         super.onDestroy()
+        adapter.dispose()
         presenter.terminate()
     }
 
@@ -105,17 +106,20 @@ class IssuesActivity : BaseActivity(), IssuesInteractor.View, OnCollectionChange
             {
                 State.RUNNING -> showLoading()
                 State.SUCCESS -> hideLoading()
-                State.FAILED -> {
+                State.FAILED ->
+                {
                     hideLoading()
                     executeRequireNetwork { it.retry?.invoke() }
                 }
             }
         })
 
-        helper.swipeRefresh.setOnRefreshListener { executeRequireNetwork {
-            presenter.refreshIssues()
-            helperEmpty.visible
-        } }
+        helper.swipeRefresh.setOnRefreshListener {
+            executeRequireNetwork {
+                presenter.refreshIssues()
+                helperEmpty.visible
+            }
+        }
     }
 
     override fun showLoading()
@@ -142,14 +146,16 @@ class IssuesActivity : BaseActivity(), IssuesInteractor.View, OnCollectionChange
 
     override fun onCollectionChanged(isEmpty: Boolean)
     {
-        if(helper.issuesList.layoutManager?.childCount!! > 0)
-        {
-            helperEmpty.visible = false
-        }
-        else
-        {
-            helperEmpty.visible = isEmpty
-        }
+//        if(adapter.itemCount > 0)
+//        {
+//            helperEmpty.visible = false
+//        }
+//        else
+//        {
+//            helperEmpty.visible = (adapter.itemCount > 0) || isEmpty
+//        }
+
+        helperEmpty.visible = ((adapter.itemCount > 0) || isEmpty.not())
     }
 
     override fun executeRequireNetwork(block: () -> Unit)

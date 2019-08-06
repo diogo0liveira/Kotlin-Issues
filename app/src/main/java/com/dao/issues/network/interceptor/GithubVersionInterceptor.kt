@@ -15,7 +15,7 @@ class GithubVersionInterceptor: Interceptor
 {
     override fun intercept(chain: Interceptor.Chain): Response
     {
-        if(chain.request().url().toString().startsWith(GithubApi.URL))
+        if(chain.request().url.toString().startsWith(GithubApi.URL))
         {
             val original: Request = chain.request()
             val request = original.newBuilder().header(KeyHeader.ACCEPT, GithubApi.VERSION).build()

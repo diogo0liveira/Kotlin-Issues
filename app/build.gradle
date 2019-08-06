@@ -36,17 +36,15 @@ android {
         }
     }
 
-    android {
-        sourceSets {
-            String sharedTestDir = 'src/sharedTest/java'
+    sourceSets {
+        String sharedTestDir = 'src/sharedTest/java'
 
-            androidTest {
-                java.srcDir sharedTestDir
-            }
+        androidTest {
+            java.srcDir sharedTestDir
+        }
 
-            test {
-                java.srcDir sharedTestDir
-            }
+        test {
+            java.srcDir sharedTestDir
         }
     }
 
@@ -75,6 +73,7 @@ android {
 
     androidExtensions {
         experimental = true
+        features = ["parcelize"]
     }
 
     dataBinding {
@@ -139,8 +138,8 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-intents:$espressoCoreVersion"
     androidTestImplementation "androidx.test.espresso:espresso-idling-resource:$espressoCoreVersion"
 
-    androidTestImplementation 'androidx.test:core-ktx:1.2.0-beta01'
-    androidTestImplementation 'com.squareup.okhttp3:mockwebserver:3.14.2'
+    androidTestImplementation 'androidx.test:core-ktx:1.2.0'
+    androidTestImplementation 'com.squareup.okhttp3:mockwebserver:4.0.1'
 
     androidTestImplementation("com.jakewharton.espresso:okhttp3-idling-resource:1.0.0") {
         exclude group: 'androidx.test.espresso', module: 'espresso-idling-resource'

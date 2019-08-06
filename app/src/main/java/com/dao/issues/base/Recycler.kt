@@ -20,6 +20,8 @@ class Recycler
             private val context: Context,
             private var list: MutableList<T>) : RecyclerView.Adapter<V>()
     {
+        private val adapterObserver: AdapterDataObserver by lazy { AdapterDataObserver() }
+
         private var changedListener: OnCollectionChangedListener? = null
 
         private fun getItem(position: Int): T = list[position]
@@ -39,16 +41,21 @@ class Recycler
             return DataBindingUtil.inflate(LayoutInflater.from(context), layout, parent, false)
         }
 
+        fun setOnCollectionChangedListener(listener: OnCollectionChangedListener)
+        {
+            changedListener = listener
+            registerAdapterDataObserver(adapterObserver)
+        }
+
         fun setDataList(list: MutableList<T>)
         {
             this.list = list
             notifyDataSetChanged()
         }
 
-        fun setOnCollectionChangedListener(listener: OnCollectionChangedListener)
+        fun dispose()
         {
-            changedListener = listener
-            registerAdapterDataObserver(AdapterDataObserver())
+            unregisterAdapterDataObserver(adapterObserver)
         }
 
         private inner class AdapterDataObserver : RecyclerView.AdapterDataObserver()

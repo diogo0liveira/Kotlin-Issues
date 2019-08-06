@@ -67,6 +67,7 @@ class IssueDetailActivity : BaseActivity(), IssueDetailInteractor.View, View.OnC
     override fun onDestroy()
     {
         super.onDestroy()
+        adapter.dispose()
         presenter.terminate()
     }
 
@@ -142,7 +143,7 @@ class IssueDetailActivity : BaseActivity(), IssueDetailInteractor.View, View.OnC
         view.user = user
 
         val bottomSheet = BottomSheetDialog(this)
-        bottomSheet.setContentView(view.root)
+        bottomSheet.setContentView(view.bottomSheet)
         bottomSheet.show()
 
         view.buttonGithub.setOnClickListener {

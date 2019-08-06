@@ -23,6 +23,8 @@ class Recycler
             private val context: Context,
             comparator: DiffUtil.ItemCallback<T>) : PagedListAdapter<T, V>(comparator)
     {
+        private val adapterObserver: AdapterDataObserver by lazy { AdapterDataObserver() }
+
         private var changedListener: OnCollectionChangedListener? = null
 
         override fun onBindViewHolder(holder: V, position: Int)
@@ -41,7 +43,12 @@ class Recycler
         fun setOnCollectionChangedListener(listener: OnCollectionChangedListener)
         {
             changedListener = listener
-            registerAdapterDataObserver(AdapterDataObserver())
+            registerAdapterDataObserver(adapterObserver)
+        }
+
+        fun dispose()
+        {
+            unregisterAdapterDataObserver(adapterObserver)
         }
 
         private inner class AdapterDataObserver : RecyclerView.AdapterDataObserver()
