@@ -83,13 +83,13 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation "androidx.core:core-ktx:$core_ktx"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+    implementation "androidx.core:core-ktx:$coreKtxVersion"
 
     implementation "com.google.android.material:material:$materialVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
     implementation "androidx.cardview:cardview:$cardviewVersion"
-    implementation "androidx.paging:paging-runtime:$pagingVersion"
+    implementation "androidx.paging:paging-runtime-ktx:$pagingVersion"
     implementation "androidx.recyclerview:recyclerview:$recyclerviewVersion"
     implementation "androidx.constraintlayout:constraintlayout:$constraintlayoutVersion"
     implementation "androidx.coordinatorlayout:coordinatorlayout:$coordinatorlayoutVersion"
@@ -139,7 +139,7 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-idling-resource:$espressoCoreVersion"
 
     androidTestImplementation 'androidx.test:core-ktx:1.2.0'
-    androidTestImplementation 'com.squareup.okhttp3:mockwebserver:4.0.1'
+    androidTestImplementation 'com.squareup.okhttp3:mockwebserver:4.8.0'
 
     androidTestImplementation("com.jakewharton.espresso:okhttp3-idling-resource:1.0.0") {
         exclude group: 'androidx.test.espresso', module: 'espresso-idling-resource'
